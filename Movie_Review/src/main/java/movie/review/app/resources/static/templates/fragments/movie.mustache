@@ -1,0 +1,15 @@
+<div class="detailed-moved-container">
+    <div class="movie-card framed">
+        <img src="{{poster}}" alt="{{title}}">
+        <div class="card-overlay">
+            <a class="card-title" href="/movies/{{movieId}}">{{title}}</a>
+        </div>
+    </div>
+
+    <div>
+        {{> fragments/new_review_form}}
+        {{#reviews}}
+            {{> fragments/review}}
+        {{/reviews}}
+    </div>
+</div>

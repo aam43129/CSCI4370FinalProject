@@ -1,0 +1,15 @@
+<div class="navbar">
+    <nav class="content-center">
+        <a href="/"><img src="/images/CineCache_black.png" alt="CineCache Logo"></a>
+        <a href="/recommendations">Recommendations</a>
+        <a href="/profile">Profile</a>
+    </nav>
+    <div>
+        <form action="/search" method="get">
+            <input name="search" class="short-input" type="text" placeholder="Search titles">
+        </form>
+        <a href="/login">Logout</a>
+    </div>
+</div>
+
+{{> fragments/error_message}}

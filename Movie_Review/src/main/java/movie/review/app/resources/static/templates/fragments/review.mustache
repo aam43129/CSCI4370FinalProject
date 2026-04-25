@@ -1,0 +1,13 @@
+<div class="reviews_container">
+    <h3>{{user_id}}</h3>
+    <div class="rating-date">
+        <div>
+            {{#starIcons}}
+                <i class="fa {{.}} checked"></i>
+            {{/starIcons}}
+            <span class="rating-number">{{ratingValue}}</span>
+        </div>
+        <p>{{postDate}}</p>
+    </div>
+    <p>{{content}}</p>
+</div>

@@ -1,0 +1,21 @@
+<div class="pagination">
+  {{#prev_page}}
+    <a href="?page={{prev_page}}">&laquo;</a>
+  {{/prev_page}}
+
+  {{#pagination}}
+    {{#isSeparator}}
+      <span class="dots">...</span>
+    {{/isSeparator}}
+    
+    {{^isSeparator}}
+      <a href="?page={{number}}" class="{{#isCurrent}}active{{/isCurrent}}">
+        {{number}}
+      </a>
+    {{/isSeparator}}
+  {{/pagination}}
+
+  {{#next_page}}
+    <a href="?page={{next_page}}">&raquo;</a>
+  {{/next_page}}
+</div>

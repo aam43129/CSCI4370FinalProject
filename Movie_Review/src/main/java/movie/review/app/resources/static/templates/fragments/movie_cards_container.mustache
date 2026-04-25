@@ -1,0 +1,11 @@
+<div class="movies_container">
+    <!-- Movies Section -->
+    <div class="movies">
+        {{#movies}}
+            {{> fragments/movie_card}}
+        {{/movies}}
+        {{^movies}}
+        <p>No movies found for this search.</p>
+        {{/movies}}
+    </div>
+</div>

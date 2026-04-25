@@ -1,0 +1,89 @@
+<form action="/recommendations" method="get" class="browse-form title-bar content-center">
+    <select onchange="this.form.submit()" name="sortBy" onclass="short-input">
+        <option value="" hidden>Sort By</option>
+        <option value="popularity" {{#isPopularity}}selected{{/isPopularity}}>Popularity</option>
+        <option value="rating" {{#isRating}}selected{{/isRating}}>Rating</option>
+        <option value="runtime" {{#isRuntime}}selected{{/isRuntime}}>Runtime</option>
+        <option value="revenue" {{#isRevenue}}selected{{/isRevenue}}>Revenue</option>
+        <option value="releaseDate" {{#isReleaseDate}}selected{{/isReleaseDate}}>Release Date</option>
+    </select>
+    {{#isAsc}}
+        <input type="hidden" name="sortByOrder" value="desc">
+        <button type="submit" class="sort-btn">
+            <i class="fa fa-sort-amount-desc"></i> Sort High-Low
+        </button>
+    {{/isAsc}}
+
+    {{^isAsc}}
+        <input type="hidden" name="sortByOrder" value="asc">
+        <button type="submit" class="sort-btn">
+            <i class="fa fa-sort-amount-asc"></i> Sort Low-High
+        </button>
+    {{/isAsc}}
+    <label for="minRating">Minimum Rating:</label>
+    <input type="number" id="minRating" name="minRating" min="1" max="5">     
+    <label>Genre:</label>
+    <div class="cloud">
+        <input type="checkbox" name="genre[]"value="action" id="action" hidden>
+        <label for="action" class="genre-tag">Action</label>
+
+        <input type="checkbox" name="genre[]" value="adventure" id="adventure" hidden>
+        <label for="adventure" class="genre-tag">Adventure</label>
+
+        <input type="checkbox" name="genre[]" value="fantasy" id="fantasy" hidden>
+        <label for="fantasy" class="genre-tag">Fantasy</label>
+
+        <input type="checkbox" name="genre[]" value="sci-fi" id="scifi" hidden>
+        <label for="scifi" class="genre-tag">Science Fiction</label>
+
+        <input type="checkbox" name="genre[]" value="crime" id="crime" hidden>
+        <label for="crime" class="genre-tag">Crime</label>
+
+        <input type="checkbox" name="genre[]" value="drama" id="drama" hidden>
+        <label for="drama" class="genre-tag">Drama</label>
+
+        <input type="checkbox" name="genre[]" value="thriller" id="thriller" hidden>
+        <label for="thriller" class="genre-tag">Thriller</label>
+
+        <input type="checkbox" name="genre[]" value="animation" id="animation" hidden>
+        <label for="animation" class="genre-tag">Animation</label>
+
+        <input type="checkbox" name="genre[]" value="family" id="family" hidden>
+        <label for="family" class="genre-tag">Family</label>
+
+        <input type="checkbox" name="genre[]" value="western" id="western" hidden>
+        <label for="western" class="genre-tag">Western</label>
+
+        <input type="checkbox" name="genre[]" value="comedy" id="comedy" hidden>
+        <label for="comedy" class="genre-tag">Comedy</label>
+
+        <input type="checkbox" name="genre[]" value="romance" id="romance" hidden>
+        <label for="romance" class="genre-tag">Romance</label>
+
+        <input type="checkbox" name="genre[]"value="horror" id="horror" hidden>
+        <label for="horror" class="genre-tag">Horror</label>
+
+        <input type="checkbox" name="genre[]"value="mystery" id="mystery" hidden>
+        <label for="mystery" class="genre-tag">Mystery</label>
+
+        <input type="checkbox" name="genre[]"value="history" id="history" hidden>
+        <label for="history" class="genre-tag">History</label>
+
+        <input type="checkbox" name="genre[]"value="war" id="war" hidden>
+        <label for="war" class="genre-tag">War</label>
+
+        <input type="checkbox" name="genre[]"value="music" id="music" hidden>
+        <label for="music" class="genre-tag">Music</label>
+
+        <input type="checkbox" name="genre[]"value="documentary" id="doc" hidden>
+        <label for="doc" class="genre-tag">Documentary</label>
+
+        <input type="checkbox" name="genre[]"value="tv-movie" id="tv" hidden>
+        <label for="tv" class="genre-tag">TV Movie</label>
+    </div>
+    <label for="prodCompany">Production Company</label>
+    <input name="hashtags" class="input" type="text" placeholder="Walt Disney Pictures">
+    <button type="submit" class="action-button">Apply</button>
+</form>
+
+<script>

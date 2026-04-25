@@ -1,0 +1,543 @@
+/**
+Copyright (c) 2024 Sami Menik, PhD. All rights reserved.
+
+This is a project developed by Dr. Menik to give the students an opportunity to apply database concepts learned in the class in a real world project. Permission is granted to host a running version of this software and to use images or videos of this work solely for the purpose of demonstrating the work to potential employers. Any form of reproduction, distribution, or transmission of the software's source code, in part or whole, without the prior written consent of the copyright owner, is strictly prohibited.
+*/
+
+:root {
+    --normal-text-color: white;
+    --frame-color: #222831;
+    --box-color: #fff;
+    --highlight-color: #009BFF;
+}
+
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: white;
+    backgroud-color: black;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 16pt;
+}
+
+nav {
+    text-align: left;
+}
+
+nav a {
+    text-decoration: none;
+    margin-right: 16pt;
+    color: var(--normal-text-color);
+    font-weight: bold;
+    display: inline-block;
+    transition: font-weight 0.5s ease;
+}
+
+nav a:hover {
+    font-weight: bold;
+}
+
+.framed {
+    border: 0.8pt solid var(--frame-color);
+    border-radius: 4pt;
+}
+
+.title-bar {
+    font-size: 12pt;
+    color: var(--action-item-color);
+    padding: 8pt 0;
+    text-align: left;
+}
+
+.banner {
+    background-image: linear-gradient(to bottom right, black, #009BFF);
+    color: #ffffff;
+}
+
+.bannerList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.bannerList li {
+    float: left;
+    padding: 0 8px;
+}
+
+.list-title {
+    color: white;
+    font-size: 1.1em;
+}
+
+.movies_container {
+    margin: 10px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+}
+
+.movie-card {
+    height: 100%;
+    width: 100%;
+    margin-bottom: 8pt;
+    display: block;
+    border-radius: 8px;
+}
+
+.movie-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+.card-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: opacity .5s ease;
+    background: linear-gradient(to bottom, transparent, black);
+    overflow: hidden;
+}
+
+.movie-card:hover .card-overlay {
+    opacity: 1;
+}
+
+.card-title {
+    color: white;
+    font-size: 1.05em;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.action-button {
+    /* background-color: #657786; */
+    background-color: #009BFF;
+    color: white;
+    border: 1.2pt solid #0092CA;
+    border-radius: 16pt;
+    padding: 8pt 16pt;
+    cursor: pointer;
+}
+
+.action-button:hover {
+    color: #0092CA;
+}
+
+.short-input {
+    padding: 8pt 16pt;
+    margin: 8pt;
+    border: 0.8pt solid lightgray;
+    border-radius: 16pt;
+}
+
+.short-input:hover {
+    border: 1.2pt solid #009BFF;
+}
+
+.short-input.full {
+    width: calc(100% - 32pt);
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    color: white;
+    background-color: #222831;
+}
+
+.search_and_results_container {
+    display: flex;
+}
+
+.browse-form {
+    background-color: #222831;
+    color: white;
+}
+
+.sort-btn {
+    background: white;
+    border: 1px solid lightgrey;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: sans-serif;
+}
+
+.star-wrap {
+    width: max-content;
+    margin: 0 auto;
+    position: relative;
+}
+
+.star-label.hidden {
+    display: none;
+}
+
+.star-label {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 4rem;
+    height: 4rem;
+}
+
+@media (min-width: 840px) {
+    .star-label {
+        width: 6rem;
+        height: 6rem;
+    }
+}
+
+.checked {
+    color: gold;
+    padding: 5px 10px;
+}
+
+/* make stars *after* the checked radio gray*/
+.star:checked+.star-label~.star-label .fa-star {
+    color: lightgray;
+}
+
+/*hide away the actual radio inputs*/
+.star {
+    position: fixed;
+    opacity: 0;
+    /*top: -90000px;*/
+    left: -90000px;
+}
+
+.star:focus+.star-label {
+    outline: 2px dotted black;
+}
+
+.skip-button {
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 1rem;
+    position: absolute;
+    top: -2rem;
+    right: -1rem;
+    /*transform: translateY(-50%);*/
+    text-align: center;
+    line-height: 2rem;
+    font-size: 2rem;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.skip-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#skip-star:checked~.skip-button {
+    display: none;
+}
+
+.cloud {
+    max-width: 500px;
+    margin: 10px 0;
+}
+
+.genre {
+    display: inline-block;
+    padding: 8px 14px;
+    margin: 5px 2px;
+    background: #f0f0f0;
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: sans-serif;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+/* Hover effect for better UX */
+.tag:hover {
+    background: white;
+}
+
+/* Checked state */
+input:checked+.tag {
+    background: #009BFF;
+    color: white;
+    border-color: #0092CA;
+}
+
+.submit-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.detailed-movie-container {
+    display: flex;
+    gap: 3%;
+    background-color: #222831;
+    color: white;
+}
+
+.detailed-movie-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.reviews_container {
+    background-color: #222831;
+    display: flex;
+    flex-direction: column;
+    border: none;
+    border-radius: 18px;
+    gap: 10px;
+    padding: 10px;
+}
+
+.rating-date {
+    display: flex;
+    justify-content: space-between;
+}
+
+.content-center {
+    max-width: 480pt;
+    margin: 0 auto;
+}
+
+.container {
+    max-width: 480pt;
+    margin: 24pt auto;
+    background-color: var(--box-color);
+    border-radius: 4pt;
+}
+
+.container.narrow {
+    max-width: 300pt;
+}
+
+.center-align {
+    text-align: center;
+}
+
+.review-form textarea {
+    width: calc(100% - 16pt);
+    padding: 8pt;
+    margin: 8pt;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.review-form textarea:hover {
+    border: 1.2pt solid var(--highlight-color);
+}
+
+.review-form .action-button {
+    float: right;
+    margin-right: 8pt;
+    margin-bottom: 8pt;
+    background-color: #009BFF;
+    color: white;
+}
+
+.review-form-stars {
+    display: flex;
+    gap: 4px;
+}
+
+.star-rating {
+    border: none;
+    float: left;
+}
+
+/* Hide the actual radio buttons */
+.star-rating input {
+    display: none;
+}
+
+/* Style for the Label (the star) */
+.star-rating label:before {
+    margin: 5px;
+    font-size: 1.5em;
+    font-family: FontAwesome;
+    display: inline-block;
+    content: "\f005";
+}
+
+/* Half-star positioning */
+.star-rating .half:before {
+    content: "\f089";
+    position: absolute;
+}
+
+.star-rating label {
+    color: #ddd;
+    float: right;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+/* Highlight stars on Hover and Checked */
+.star-rating input:checked~label,
+.star-rating:not(:checked)>label:hover,
+.star-rating:not(:checked)>label:hover~label {
+    color: gold;
+}
+
+/* Darken the gold slightly when clicking a specific star */
+.star-rating>input:checked+label:hover,
+.star-rating>input:checked~label:hover,
+.star-rating>label:hover~input:checked~label,
+.star-rating>input:checked~label:hover~label {
+    color: goldenrod;
+}
+
+.post {
+    padding: 16pt;
+    margin-bottom: 8pt;
+    position: relative;
+    display: block;
+}
+
+.post img {
+    position: absolute;
+    border-radius: 50%;
+    width: 36pt;
+    height: 36pt;
+    margin-right: 8pt;
+    border: 1pt solid var(--normal-text-color);
+}
+
+.post a {
+    color: var(--normal-text-color);
+    /* text-decoration: none; */
+}
+
+.post-body {
+    margin-left: 50pt;
+}
+
+.post-date {
+    color: var(--action-item-color);
+    font-size: 0.85rem;
+    margin: 3pt 0;
+    display: inline-block;
+}
+
+.post-content {
+    margin-bottom: 8pt;
+    line-height: 1.5;
+}
+
+.post-actions {
+    margin-top: 8pt;
+    display: flex;
+    align-items: center;
+}
+
+.post-actions a,
+.post-actions button,
+.post-actions .action-count {
+    margin-right: 8pt;
+    color: var(--action-item-color);
+    cursor: pointer;
+    background: none;
+    border: none;
+    display: inline;
+    padding: 0;
+    font-size: 12pt;
+    text-decoration: none;
+}
+
+.post-actions form {
+    display: inline;
+}
+
+.post-actions .action-count {
+    vertical-align: middle;
+    margin-left: -4pt;
+}
+
+.post-actions .action-count:hover {
+    color: var(--action-item-color);
+}
+
+.post-actions *:hover {
+    color: var(--highlight-color)
+}
+
+.post .comments {
+    margin-top: 16pt;
+    display: block;
+}
+
+.user-follow {
+    position: absolute;
+    margin: 18pt;
+    top: 0pt;
+    right: 0pt;
+    color: var(--action-item-color);
+}
+
+.user-follow *:hover {
+    color: var(--highlight-color);
+}
+
+.username {
+    font-weight: bold;
+    display: block;
+}
+
+.clear {
+    clear: both;
+}
+
+.error-message {
+    margin: 24pt 0;
+    color: #d61111;
+}
+
+.no-content-message {
+    margin: 24pt 0;
+}
+
+.footer {
+    text-align: left;
+    padding-top: 24pt;
+    padding-bottom: 16pt;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: var(--action-item-color);
+}
+
+.footer p {
+    font-size: 10pt;
+}
+
+.link {
+    margin-left: 16pt;
+}
