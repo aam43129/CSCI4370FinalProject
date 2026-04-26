@@ -1,9 +1,16 @@
 <div class="detailed-moved-container">
     <div class="movie-card framed">
         <img src="{{poster}}" alt="{{title}}">
-        <div class="card-overlay">
-            <a class="card-title" href="/movies/{{movieId}}">{{title}}</a>
-        </div>
+        {{#isListed}}
+            <form method="get" action="/post/{{postId}}/listed/false">
+                <button class="fa-solid fa-bookmark"></button>
+            </form>
+        {{/isListed}}
+        {{^isListed}}
+            <form method="get" action="/movie/{{movieId}}/listed/true">
+                <button class="fa-solid fa-heart"></button>
+            </form>
+        {{/isListed}}    
     </div>
 
     <div>

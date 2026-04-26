@@ -27,27 +27,32 @@ public class ProfileService {
         this.dataSource = dataSource;
     }
 
-    public List<Movie> getMovies() {
+    public List<Movie> getMovies(String currentUserId) {
         final String sql
-                = "SELECT m.movieId movieId, m.title title, m.poster poster "
-                + "FROM movie m, rating r "
-                + "WHERE m.movie_id = r.movie_id "
+                = "SELECT m.movie_id movie_id, m.title title, m.poster poster, m.tagline tagline "
+                + "FROM movie m, user_movie_list uml "
+                + "WHERE uml.user_id = ? "
+                + "AND m.movie_id = uml.movie_id "
                 + "GROUP BY m.movie_id "
-                + "ORDER BY AVG(r.rating) DESC "
+                + "ORDER BY AVG(m.popularity) DESC "
                 + "LIMIT 10;";
 
         List<Movie> movies = new ArrayList<>();
 
-        try (Connection conn = dataSource.getConnection(); 
-        PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = dataSource.getConnection()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, currentUserId);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    String movieId = rs.getString("movieId");
+                    String movieId = rs.getString("movie_id");
                     String title = rs.getString("title");
                     String poster = rs.getString("poster");
+                    String tagline = rs.getString("tagline");
+                    Boolean isListed = rs.getInt("isListed") == 1;
 
-                    movies.add(new Movie(movieId, title, poster));
+                    // isListed is true because rs returns user-listed movies
+                    movies.add(new Movie(movieId, title, poster, tagline, true)); 
                 }
             }
         } catch (SQLException e) {

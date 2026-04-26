@@ -17,7 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 import movie.review.app.models.Movie;
 import movie.review.app.models.Page;
 import movie.review.app.models.RecommendationResponse;
+
 import movie.review.app.services.RecommendationService;
+import movie.review.app.services.UserService;
+import movie.review.app.services.UtilityService;
 
 /**
  * This controller handles the home page and some of it's sub URLs.
@@ -27,6 +30,7 @@ import movie.review.app.services.RecommendationService;
 public class RecommendationController {
 
     private final RecommendationService recommendationService;
+    private final UserService userService;
 
     /**
      * This is the specific function that handles the root URL itself.
@@ -37,8 +41,9 @@ public class RecommendationController {
      */
     // private final UserService userService;
     @Autowired
-    public RecommendationController(RecommendationService recommendationService) {
+    public RecommendationController(RecommendationService recommendationService, UserService userService) {
         this.recommendationService = recommendationService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -51,13 +56,15 @@ public class RecommendationController {
             @RequestParam(name = "error", required = false) String error) {
         ModelAndView mv = new ModelAndView("recommendation_page");
 
-        String query = RecommendationService.buildQuery(sortBy, sortByOrder, minRating, genres, prodCompany);
-        RecommendationResponse response = recommendationService.getMovies(page, query);
+        String currentUserId = userService.getLoggedInUser().getUserId();
+
+        String query = RecommendationService.buildQuery(currentUserId, sortBy, sortByOrder, minRating, genres, prodCompany);
+        RecommendationResponse response = recommendationService.getMovies(currentUserId, page, query);
 
         List<Movie> movies = response.getMovies();
         int totalCount = response.getTotalCount();
 
-        List<Page> pagination = RecommendationService.getPages(page, totalCount);
+        List<Page> pagination = UtilityService.getPages(page, totalCount);
 
         mv.addObject("movies", movies);
         mv.addObject("pagination", pagination);

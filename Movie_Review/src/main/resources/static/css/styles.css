@@ -18,6 +18,14 @@ body {
     min-height: 100vh;
 }
 
+.login-title {
+    color: white;
+}
+
+.login-buttons {
+    margin: 5px;
+}
+
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -136,6 +144,42 @@ nav a img {
     display: block;
 }
 
+.bookmark-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    padding: 0;
+    color: lightgrey;
+    background-color: #00000066;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.bookmark-btn button {
+    background: none;
+    border: none;
+    color: inherit;
+    font-family: FontAwesome;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0;
+    display: inline-block;
+}
+
+.bookmark-btn.selected {
+    color: #009BFF;
+    opacity: 1;
+}
+
 .card-overlay {
     display: flex;
     flex-direction: column;
@@ -143,6 +187,7 @@ nav a img {
     padding: 15px;
     position: absolute;
     overflow: hidden;
+    color: white;
     top: 0;
     bottom: 0;
     left: 0;
@@ -158,15 +203,24 @@ nav a img {
 
 .movie-card:hover .card-overlay {
     opacity: 1;
+    z-index: 5;
 }
 
-.card-title {
-    color: white;
+.movie-card:hover .bookmark-btn {
+    opacity: 1;
+}
+
+.card-overlay .card-title {
     font-size: 1.1em;
     font-weight: bold;
     width: 100%;
     height: auto;
-    text-align: left;
+    margin: 0;
+}
+
+.card-overlay p {
+    font-size: 1em;
+    width: 100%;
 }
 
 .results-wrapper {
@@ -225,7 +279,8 @@ nav a img {
     background-color: #222831;
 }
 
-.pagination a, .pagination span {
+.pagination a,
+.pagination span {
     padding: 8px 12px;
     text-decoration: none;
     border: 1px solid #393E46;
@@ -234,7 +289,7 @@ nav a img {
 }
 
 .pagination a.active {
-    background-color: #009BFF; 
+    background-color: #009BFF;
     color: white;
 }
 

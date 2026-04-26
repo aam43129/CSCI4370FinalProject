@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2024 Sami Menik, PhD. All rights reserved.
-
+ *
  *  *This is a project developed by Dr. Menik to give the students an opportunity to apply database concepts learned in the class in a real world project. Permission is granted to host a running version of this software and to use images or videos of this work solely for the purpose of demonstrating the work to potential employers. Any form of reproduction, distribution, or transmission of the software's source code, in part or whole, without the prior written consent of the copyright owner, is strictly prohibited.
  */
 package movie.review.app.controllers;
@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import movie.review.app.models.Movie;
 import movie.review.app.services.ProfileService;
-
+import movie.review.app.services.UserService;
 
 /**
  * This controller handles the home page and some of it's sub URLs.
@@ -26,6 +26,7 @@ import movie.review.app.services.ProfileService;
 public class ProfileController {
 
     private final ProfileService profileService;
+    private final UserService userService;
 
     /**
      * This is the specific function that handles the root URL itself.
@@ -36,14 +37,21 @@ public class ProfileController {
      */
     // private final UserService userService;
     @Autowired
-    public ProfileController(ProfileService profileService) {
+    public ProfileController(ProfileService profileService, UserService userService) {
         this.profileService = profileService;
+        this.userService = userService;
     }
 
     @GetMapping
-    public ModelAndView webpage(@RequestParam(defaultValue = "1") int page,    
-            @RequestParam(name = "error", required = false) String error) {     
-        ModelAndView mv = new ModelAndView("recommendation_page");
+    public ModelAndView webpage(@RequestParam(defaultValue = "1") int page,
+            @RequestParam(name = "error", required = false) String error) {
+        ModelAndView mv = new ModelAndView("profile_page");
+
+        String currentUserId = userService.getLoggedInUser().getUserId();
+
+        List<Movie> movies = profileService.getMovies(currentUserId);
+
+        mv.addObject("movies", movies);
 
         return mv;
     }
