@@ -1,8 +1,13 @@
 package movie.review.app.models;
 
 public class Page {
+    /* Determines the number of the current page */
     private int pageNum;
+
+    /* Determines if this is the page that the user is on  */
     private boolean isCurrent;
+
+    /* Determines if this page is a separator */
     private boolean isSeparator;
 
     /*

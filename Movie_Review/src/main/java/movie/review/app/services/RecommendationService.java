@@ -10,10 +10,12 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import movie.review.app.models.Movie;
 import movie.review.app.models.Page;
 
+@Service
 public class RecommendationService {
     
     private final DataSource dataSource;

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+{{> fragments/html_header}}
+
+<body>
+
+    {{> fragments/top_bar}}
+
+    <div class="search_and_results_container">
+        <div class="results-wrapper">
+            {{> fragments/movie_cards_container}}
+            {{^movies}}
+                <div class="no-results-centered">
+                    <i class="fa fa-search"></i>
+                    <p>No movies found for this search.</p>
+                </div>
+            {{/movies}}
+        </div>
+
+        <div class="sort_filter_container">
+            {{>fragments/sort_filter}}
+        </div>
+    </div>
+
+</body>
+
+</html>

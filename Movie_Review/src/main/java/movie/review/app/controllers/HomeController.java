@@ -5,6 +5,7 @@
  */
 package movie.review.app.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,8 @@ public class HomeController {
 
         List<Movie> movies = homeService.getMovies();
         
-        mv.addObject("movies", movies);
+        // mv.addObject("movies", movies);
+        mv.addObject("movies", new ArrayList<>());
         
         // If an error occured, you can set the following property with the
         // error message to show the error message to the user.

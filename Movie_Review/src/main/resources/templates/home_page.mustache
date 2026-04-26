@@ -11,8 +11,12 @@
     {{> fragments/no_content_message}}
 
     <h1 class="list-title">Trending Movies</h1>
-    {{> fragments/movies_container}}
-
+    <div class="trending-container">
+        {{> fragments/movie_cards_container}}
+        {{^movies}}
+            <p class="text-center">No movies found for this search.</p>
+        {{/movies}}
+    </div>
 </body>
 
 </html>

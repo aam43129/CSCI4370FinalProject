@@ -29,8 +29,8 @@ public class HomeService {
 
     public List<Movie> getMovies() {
         final String sql
-                = "SELECT m.movieId movieId, m.title title, m.poster poster "
-                + "FROM movie m, rating r "
+                = "SELECT m.movie_Id movieId, m.title title, m.poster poster "
+                + "FROM movie m, review r "
                 + "WHERE m.movie_id = r.movie_id "
                 + "GROUP BY m.movie_id "
                 + "ORDER BY AVG(r.rating) DESC "
