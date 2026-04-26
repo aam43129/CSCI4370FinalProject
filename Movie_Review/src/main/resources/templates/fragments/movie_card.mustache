@@ -2,13 +2,13 @@
     <img src="{{poster}}" alt="{{title}}">
 
     {{#isListed}}
-        <form class="bookmark-btn selected" method="get" action="/post/{{postId}}/listed/false">
+        <form class="bookmark-btn selected" method="get" action="/movies/{{movieId}}/list/false">
             <button class="fa fa-bookmark"></button>
         </form>
     {{/isListed}}
 
     {{^isListed}}
-        <form class="bookmark-btn" method="get" action="/movie/{{movieId}}/listed/true">
+        <form class="bookmark-btn" method="get" action="/movies/{{movieId}}/list/true">
             <button class="fa-regular fa-bookmark-o"></button>
         </form>
     {{/isListed}}    

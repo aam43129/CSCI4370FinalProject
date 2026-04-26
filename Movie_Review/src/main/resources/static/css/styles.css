@@ -671,7 +671,39 @@ input:checked+.genre-tag {
 .review-form-stars {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 10px;
+}
+
+#star0 {
+    display: none;
+}
+
+#star0:checked + .reset-option {
+    color: #ff4d4d;
+}
+
+.reset-option:hover {
+    color: #ff4d4d;
+}
+
+.reset-option {
+    font-family: FontAwesome;
+    font-size: 1.2em;
+    height: 2em;
+    color: lightgrey; 
+    cursor: pointer;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+}
+
+.reset-option:hover {
+    color: #d61111;
+}
+
+#star0:checked ~ label {
+    color: lightgrey;
 }
 
 .star-rating {

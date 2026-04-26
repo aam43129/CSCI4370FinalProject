@@ -4,12 +4,21 @@
             <img src="{{poster}}" alt="{{title}}">
         </div>
         
-        <form method="get" action="/movie/{{movieId}}/listed/{{#isListed}}false{{/isListed}}{{^isListed}}true{{/isListed}}">
-            <button class="action-button full-width">
-                {{#isListed}}Remove from List{{/isListed}}
-                {{^isListed}}Add to List{{/isListed}}
-            </button>
+        {{#isListed}}
+            <form method="get" action="/movies/{{movieId}}/list/false">
+                <button class="action-button full-width">
+                    Remove from List
+                </button>
+            </form>
+        {{/isListed}}
         </form>
+        {{^isListed}}
+            <form method="get" action="/movies/{{movieId}}/list/true">
+                <button class="action-button full-width">
+                    Add to List
+                </button>
+            </form>
+        {{/isListed}}
     </div>
 
     <div class="movie-info">
