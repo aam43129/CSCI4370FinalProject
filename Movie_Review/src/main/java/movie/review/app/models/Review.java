@@ -1,5 +1,7 @@
 package movie.review.app.models;
 
+import movie.review.app.services.UtilityService;
+
 /**
  * Represents a review.
  */
@@ -12,7 +14,7 @@ public class Review {
     private final String postDate;
     private final int rating; // 
 
-    private String[] starClasses; // for the UI
+    private String[] reviewStars; // for the UI
 
     /**
      * Constructs a Comment with specified details, leveraging the BasicPost
@@ -29,19 +31,6 @@ public class Review {
         this.postDate = postDate;
         this.rating = rating;
 
-        String[] starClasses = new String[5];
-
-        for (int i = 1; i <= 5; i++) {
-            if (rating >= i) {
-                // Full Star
-                starClasses[i] = "fa-star";
-            } else if (rating >= i - 0.5) {
-                // Half Star
-                starClasses[i] = "fa-star-half-o";
-            } else {
-                // Empty Star
-                starClasses[i] = "fa-star-o";
-            }
-        }
+        this.reviewStars = UtilityService.getStarClassStrings(5, rating);
     }
 }

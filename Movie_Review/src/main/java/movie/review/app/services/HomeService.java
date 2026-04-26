@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 
 import movie.review.app.models.Movie;
 
-import movie.review.app.services.UtilityService;
-
 /**
  * This service contains home-related functions.
  */

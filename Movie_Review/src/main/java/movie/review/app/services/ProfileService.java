@@ -49,7 +49,6 @@ public class ProfileService {
                     String title = rs.getString("title");
                     String poster = rs.getString("poster");
                     String tagline = rs.getString("tagline");
-                    Boolean isListed = rs.getInt("isListed") == 1;
 
                     // isListed is true because rs returns user-listed movies
                     movies.add(new Movie(movieId, title, poster, tagline, true)); 

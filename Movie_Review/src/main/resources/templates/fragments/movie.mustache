@@ -1,19 +1,53 @@
-<div class="detailed-moved-container">
-    <div class="movie-card framed">
-        <img src="{{poster}}" alt="{{title}}">
-        {{#isListed}}
-            <form method="get" action="/post/{{postId}}/listed/false">
-                <button class="fa-solid fa-bookmark"></button>
-            </form>
-        {{/isListed}}
-        {{^isListed}}
-            <form method="get" action="/movie/{{movieId}}/listed/true">
-                <button class="fa-solid fa-heart"></button>
-            </form>
-        {{/isListed}}    
+<div class="detailed-movie-container">
+    <div class="movie-card-column">
+        <div class="movie-card framed">
+            <img src="{{poster}}" alt="{{title}}">
+        </div>
+        
+        <form method="get" action="/movie/{{movieId}}/listed/{{#isListed}}false{{/isListed}}{{^isListed}}true{{/isListed}}">
+            <button class="action-button full-width">
+                {{#isListed}}Remove from List{{/isListed}}
+                {{^isListed}}Add to List{{/isListed}}
+            </button>
+        </form>
     </div>
 
-    <div>
+    <div class="movie-info">
+        <h1>{{title}}</h1>
+        {{#showOgTitle}}
+            <h6 class="original-title">{{original_title}} ({{original_language}})</h6>
+        {{/showOgTitle}}
+
+        <div class="rating-display">
+            {{#starClasses}}
+                <i class="fa {{.}}"></i>
+            {{/starClasses}}
+            <span class="rating-value">{{vote_average}}</span>
+            <span class="vote-count">({{vote_count}} votes)</span>
+        </div>
+
+        <div class="movie-metadata">
+            <span><i class="fa fa-calendar"></i> {{release_date}}</span>
+            <span><i class="fa fa-clock-o"></i> {{hours}}h {{minutes}}m</span>
+        </div>
+
+        <p class="movie-overview">{{overview}}</p>
+        <i class="movie-tagline">"{{tagline}}"</i>
+
+        <div class="financials">
+            <div class="stat-box">
+                <label>Budget</label>
+                <p>${{formatted_budget}}</p>
+            </div>
+            <div class="stat-box">
+                <label>Revenue</label>
+                <p>${{formatted_revenue}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="reviews-container">
+        <h3>User Reviews</h3>
         {{> fragments/new_review_form}}
         {{#reviews}}
             {{> fragments/review}}

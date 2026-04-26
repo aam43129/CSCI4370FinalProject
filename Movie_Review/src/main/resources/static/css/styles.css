@@ -139,7 +139,8 @@ nav a img {
 
 .movie-card img {
     width: 100%;
-    height: 100%;
+    height: 100%; 
+    margin: 0 auto;
     object-fit: cover;
     display: block;
 }
@@ -465,9 +466,16 @@ input:checked+.genre-tag {
 
 .detailed-movie-container {
     display: flex;
-    gap: 3%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 40px;
+    padding: 40px;
     background-color: #222831;
     color: white;
+    border-radius: 12px;
+    margin: 20px;
 }
 
 .detailed-movie-info-container {
@@ -476,19 +484,131 @@ input:checked+.genre-tag {
     gap: 8px;
 }
 
-.reviews_container {
-    background-color: #222831;
+.detailed-movie-info-card {
+    display: flex;
+}
+
+.movie-info {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.movie-info h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    color: #009BFF;
+}
+
+.movie-card-column {
+    flex: 0 0 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+/* Metadata Row */
+.movie-metadata {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 15px 0;
+    color: #ccc;
+    font-size: 0.9em;
+}
+
+.movie-metadata i {
+    color: var(--highlight-color);
+}
+
+.vote-count {
+    color: #888;
+    font-size: 0.8em;
+    margin-left: 5px;
+}
+
+/* Overview and Tagline */
+.movie-overview {
+    font-size: 1.1rem;
+    color: lightgrey;
+    max-width: 800px;
+}
+
+.movie-tagline {
+    display: block;
+    margin-bottom: 20px;
+    color: #aaa;
+}
+
+/* Financial Stat Boxes */
+.financials {
+    display: flex;
+    gap: 30px;
+    padding: 15px;
+    background: #ffffff0d;
+    border-radius: 8px;
+    width: fit-content;
+}
+
+.stat-box {
+    min-width: 120px; 
+}
+
+.stat-box label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--highlight-color);
+    letter-spacing: 1px;
+}
+
+.stat-box p {
+    margin: 5px 0 0 0;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.original-title {
+    opacity: 0.7;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+.reviews-container {
+    background-color: #393e46;
     display: flex;
     flex-direction: column;
     border: none;
     border-radius: 18px;
     gap: 10px;
-    padding: 10px;
+    padding: 20px;
+    width: 100%;
+    margin-top: 40px;
 }
 
 .rating-date {
     display: flex;
     justify-content: space-between;
+}
+
+.rating-display {
+    font-size: 1.2rem;
+    color: goldenrod;
+    /* Gold stars */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rating-value {
+    color: white;
+    font-weight: bold;
 }
 
 .content-center {
@@ -505,10 +625,7 @@ input:checked+.genre-tag {
     gap: 5px;
     padding: 20px;
     max-width: 480px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    margin: 40px auto;
     background-color: #222831;
     border-radius: 4pt;
 }
@@ -529,10 +646,16 @@ input:checked+.genre-tag {
     text-align: center;
 }
 
+.review-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
 .review-form textarea {
     width: calc(100% - 16pt);
-    padding: 8pt;
-    margin: 8pt;
+    padding: 20px;
     resize: vertical;
 }
 
@@ -541,59 +664,80 @@ input:checked+.genre-tag {
 }
 
 .review-form .action-button {
-    float: right;
-    margin-right: 8pt;
-    margin-bottom: 8pt;
     background-color: #009BFF;
     color: white;
 }
 
 .review-form-stars {
     display: flex;
+    align-items: center;
     gap: 4px;
 }
 
 .star-rating {
-    border: flex;
+    display: inline-flex;
     flex-direction: row-reverse;
     justify-content: flex-end;
-    border: none;
+    position: relative;
+    height: 2em;
+    line-height: 2em;
+}
+
+
+.star-rating i.fa {
+    font-size: 1.2em;
+    color: lightgrey;
+}
+
+.star-rating i.fa.checked {
+    color: gold !important;
+    padding: 0;
 }
 
 .star-rating input {
     display: none;
 }
 
-.star-rating label:before {
-    margin: 5px;
-    font-size: 1.5em;
-    font-family: FontAwesome;
-    display: inline-block;
-    content: "\f005";
-}
-
-.star-rating .half:before {
-    content: "\f089";
-    position: absolute;
-}
-
 .star-rating label {
-    color: #ddd;
+    color: lightgrey;
     cursor: pointer;
     transition: color 0.2s;
+    font-size: 2em;
+    font-family: FontAwesome;
+    position: relative;
+    width: 0.5em;
+    overflow: hidden;
 }
 
-.star-rating input:checked~label,
-.star-rating:not(:checked)>label:hover,
-.star-rating:not(:checked)>label:hover~label {
-    color: gold;
+.star-rating label:not(.half):before {
+    content: "\f005";
+    margin-left: -0.5em;
+    /* Shift to show the right half */
 }
 
-.star-rating>input:checked+label:hover,
-.star-rating>input:checked~label:hover,
-.star-rating>label:hover~input:checked~label,
-.star-rating>input:checked~label:hover~label {
-    color: goldenrod;
+/* Half star labels */
+.star-rating label.half:before {
+    content: "\f005";
+    position: absolute;
+    left: 0;
+}
+
+/* Hover and Checked Logic */
+.star-rating label:hover,
+.star-rating label:hover~label,
+.star-rating input:checked~label {
+    color: gold !important;
+}
+
+.star-rating label:hover~input:checked~label {
+    color: goldenrod !important;
+}
+
+/* Misc UI bits */
+.rating-number {
+    margin-left: 10px;
+    font-weight: bold;
+    color: var(--highlight-color);
 }
 
 .post {

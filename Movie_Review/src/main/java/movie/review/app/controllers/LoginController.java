@@ -25,8 +25,8 @@ public class LoginController {
     private final UserService userService;
 
     /**
-     * See notes in AuthInterceptor.java regarding how this works through
-     * dependency injection and inversion of control.
+     * See notes in AuthInterceptor.java regarding how this works 
+     * through dependency injection and inversion of control.
      */
     @Autowired
     public LoginController(UserService userService) {
@@ -35,10 +35,10 @@ public class LoginController {
 
     /**
      * This handles serving the login page at /login URL.
-     *
-     * Note that this accepts a URL parameter called error. The value to this
-     * parameter can be shown to the user as an error message. See notes in
-     * HashtagSearchController.java regarding URL parameters.
+     * 
+     * Note that this accepts a URL parameter called error.
+     * The value to this parameter can be shown to the user as an error message.
+     * See notes in HashtagSearchController.java regarding URL parameters.
      */
     @GetMapping
     public ModelAndView webpage(@RequestParam(name = "error", required = false) String error) {
@@ -56,8 +56,8 @@ public class LoginController {
     }
 
     /**
-     * This handles the /login form submission. See notes in HomeController.java
-     * regardig /createpost form submission handler.
+     * This handles the /login form submission.
+     * See notes in HomeController.java regardig /createpost form submission handler.
      */
     @PostMapping
     public String login(@RequestParam("username") String username,

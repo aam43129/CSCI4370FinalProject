@@ -6,7 +6,11 @@
 
     {{> fragments/top_bar}}
 
-    {{> fragments/movie}}
+    {{> fragments/error_message}}
+
+    {{#movie}}
+        {{> fragments/movie}}
+    {{/movie}}
 
 </body>
 

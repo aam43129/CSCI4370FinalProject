@@ -41,4 +41,22 @@ public class UtilityService {
 
         return pagination;
     }
+
+    public static String[] getStarClassStrings(int maxRating, double actualRating) {
+        String[] starClasses = new String[maxRating];
+
+        for (int i = 1; i <= maxRating; i++) {
+            if (actualRating >= i) {
+                // Full Star
+                starClasses[i - 1] = "fa-star";
+            } else if (actualRating >= i - 0.5) {
+                // Half Star
+                starClasses[i - 1] = "fa-star-half-o";
+            } else {
+                // Empty Star
+                starClasses[i - 1] = "fa-star-o";
+            }
+        }
+        return starClasses;
+    }
 }
