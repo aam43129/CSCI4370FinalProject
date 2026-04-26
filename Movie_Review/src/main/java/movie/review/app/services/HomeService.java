@@ -29,7 +29,7 @@ public class HomeService {
 
     public List<Movie> getMovies() {
         final String sql
-                = "SELECT m.movie_Id movieId, m.title title, m.poster poster "
+                = "SELECT m.movie_id movieId, m.title title, m.poster poster "
                 + "FROM movie m, review r "
                 + "WHERE m.movie_id = r.movie_id "
                 + "GROUP BY m.movie_id "

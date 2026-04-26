@@ -14,10 +14,11 @@ import org.springframework.stereotype.Service;
 
 import movie.review.app.models.Movie;
 import movie.review.app.models.Page;
+import movie.review.app.models.RecommendationResponse;
 
 @Service
 public class RecommendationService {
-    
+
     private final DataSource dataSource;
 
     @Autowired
@@ -25,34 +26,43 @@ public class RecommendationService {
         this.dataSource = dataSource;
     }
 
-    public List<Movie> getSortedAndFilteredMovies(String sortBy, String sortByOrder, String minRating, String[] genres, String prodCompany, int offset) {
+    public static String buildQuery(String sortBy, String sortByOrder, String minRating, String[] genres, String prodCompany) {
+        // building a query to return to the controller
+        // for usage with getMovies and getPages
+        // ideally this query will not have the select portion in it
+        return "from movie where popularity > 80 order by popularity desc ";
+    }
+
+    public RecommendationResponse getMovies(int pageNum, String queryFragment) {
         List<Movie> movies = new ArrayList<>();
+        int totalCount = 0; // numResults, not numPages
 
-        // sortby
-        // asc or desc
-        // genre[]        
+        // 1. Build queries without internal semicolons
+        String query1 = "select movie_id, title, poster " + queryFragment;
+        String query2 = "select count(*) " + queryFragment;
 
-        
-        final String sql = "";
-        
+        // 2. Limit/Offset go at the VERY end
+        int offset = (pageNum - 1) * 20;
+        query1 += " LIMIT 20 OFFSET " + offset;
 
-        try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-
+        try (Connection conn = dataSource.getConnection()) {
+            // Get the movies
+            try (PreparedStatement pstmt = conn.prepareStatement(query1); ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    String movieId = rs.getString("movieId");
-                    String title = rs.getString("title");
-                    String poster = rs.getString("poster");
-
-                    movies.add(new Movie(movieId, title, poster));
+                    movies.add(new Movie(rs.getString("movie_id"), rs.getString("title"), rs.getString("poster")));
+                }
+            }
+            // Get the total count
+            try (PreparedStatement pstmt = conn.prepareStatement(query2); ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    totalCount = rs.getInt(1);
                 }
             }
         } catch (SQLException e) {
-            System.out.println(sql);
             e.printStackTrace();
         }
-        return movies;
+        // Return totalCount so getPages can calculate totalPages
+        return new RecommendationResponse(movies, totalCount);
     }
 
     /*

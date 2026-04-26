@@ -1,8 +1,8 @@
 /**
-Copyright (c) 2024 Sami Menik, PhD. All rights reserved.
-
-This is a project developed by Dr. Menik to give the students an opportunity to apply database concepts learned in the class in a real world project. Permission is granted to host a running version of this software and to use images or videos of this work solely for the purpose of demonstrating the work to potential employers. Any form of reproduction, distribution, or transmission of the software's source code, in part or whole, without the prior written consent of the copyright owner, is strictly prohibited.
-*/
+ * Copyright (c) 2024 Sami Menik, PhD. All rights reserved.
+ *
+ *  *This is a project developed by Dr. Menik to give the students an opportunity to apply database concepts learned in the class in a real world project. Permission is granted to host a running version of this software and to use images or videos of this work solely for the purpose of demonstrating the work to potential employers. Any form of reproduction, distribution, or transmission of the software's source code, in part or whole, without the prior written consent of the copyright owner, is strictly prohibited.
+ */
 package movie.review.app.services;
 
 import java.sql.Connection;
@@ -20,11 +20,11 @@ import org.springframework.web.context.annotation.SessionScope;
 import movie.review.app.models.User;
 
 /**
- * This is a service class that enables user related functions.
- * The class interacts with the database through a dataSource instance.
- * See authenticate and registerUser functions for examples.
- * This service object is spcial. It's lifetime is limited to a user session.
- * Usual services generally have application lifetime.
+ * This is a service class that enables user related functions. The class
+ * interacts with the database through a dataSource instance. See authenticate
+ * and registerUser functions for examples. This service object is spcial. It's
+ * lifetime is limited to a user session. Usual services generally have
+ * application lifetime.
  */
 @Service
 @SessionScope
@@ -38,8 +38,8 @@ public class UserService {
     private User loggedInUser = null;
 
     /**
-     * See AuthInterceptor notes regarding dependency injection and
-     * inversion of control.
+     * See AuthInterceptor notes regarding dependency injection and inversion of
+     * control.
      */
     @Autowired
     public UserService(DataSource dataSource) {
@@ -48,15 +48,14 @@ public class UserService {
     }
 
     /**
-     * Authenticate user given the username and the password and
-     * stores user object for the logged in user in session scope.
-     * Returns true if authentication is succesful. False otherwise.
+     * Authenticate user given the username and the password and stores user
+     * object for the logged in user in session scope. Returns true if
+     * authentication is succesful. False otherwise.
      */
     public boolean authenticate(String username, String password) throws SQLException {
         // Note the ? mark in the query. It is a place holder that we will later replace.
         final String sql = "select * from user where username = ?";
-        try (Connection conn = dataSource.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // Following line replaces the first place holder with username.
             pstmt.setString(1, username);
@@ -71,7 +70,7 @@ public class UserService {
                     boolean isPassMatch = passwordEncoder.matches(password, storedPasswordHash);
                     // Note: 
                     if (isPassMatch) {
-                        String userId = rs.getString("userId");
+                        String userId = rs.getString("user_id");
                         String firstName = rs.getString("firstName");
                         String lastName = rs.getString("lastName");
 
@@ -107,18 +106,17 @@ public class UserService {
     }
 
     /**
-     * Registers a new user with the given details.
-     * Returns true if registration is successful. If the username already exists,
-     * a SQLException is thrown due to the unique constraint violation, which should
-     * be handled by the caller.
+     * Registers a new user with the given details. Returns true if registration
+     * is successful. If the username already exists, a SQLException is thrown
+     * due to the unique constraint violation, which should be handled by the
+     * caller.
      */
     public boolean registerUser(String username, String password, String firstName, String lastName)
             throws SQLException {
         // Note the ? marks in the SQL statement. They are placeholders like mentioned above.
         final String registerSql = "insert into user (username, password, firstName, lastName) values (?, ?, ?, ?)";
 
-        try (Connection conn = dataSource.getConnection();
-                PreparedStatement registerStmt = conn.prepareStatement(registerSql)) {
+        try (Connection conn = dataSource.getConnection(); PreparedStatement registerStmt = conn.prepareStatement(registerSql)) {
             // Following lines replace the placeholders 1-4 with values.
             registerStmt.setString(1, username);
             registerStmt.setString(2, passwordEncoder.encode(password));

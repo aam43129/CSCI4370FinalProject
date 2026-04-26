@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2024 Sami Menik, PhD. All rights reserved.
-
+ *
  *  *This is a project developed by Dr. Menik to give the students an opportunity to apply database concepts learned in the class in a real world project. Permission is granted to host a running version of this software and to use images or videos of this work solely for the purpose of demonstrating the work to potential employers. Any form of reproduction, distribution, or transmission of the software's source code, in part or whole, without the prior written consent of the copyright owner, is strictly prohibited.
  */
 package movie.review.app.controllers;
@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import movie.review.app.models.Movie;
+import movie.review.app.models.Page;
+import movie.review.app.models.RecommendationResponse;
 import movie.review.app.services.RecommendationService;
-
 
 /**
  * This controller handles the home page and some of it's sub URLs.
@@ -46,15 +47,21 @@ public class RecommendationController {
             @RequestParam(name = "sortByOrder", required = false) String sortByOrder,
             @RequestParam(name = "minRating", required = false) String minRating,
             @RequestParam(name = "genre[]", required = false) String[] genres,
-            @RequestParam(name = "prodCompany", required = false) String prodCompany,     
-            @RequestParam(name = "error", required = false) String error) {     
+            @RequestParam(name = "prodCompany", required = false) String prodCompany,
+            @RequestParam(name = "error", required = false) String error) {
         ModelAndView mv = new ModelAndView("recommendation_page");
 
-        int offset = (page - 1) * 20; // 20 is the number of movies per page
-        List<Movie> movies = recommendationService.getSortedAndFilteredMovies(sortBy, sortByOrder, minRating, genres, prodCompany, offset);
-        
+        String query = RecommendationService.buildQuery(sortBy, sortByOrder, minRating, genres, prodCompany);
+        RecommendationResponse response = recommendationService.getMovies(page, query);
+
+        List<Movie> movies = response.getMovies();
+        int totalCount = response.getTotalCount();
+
+        List<Page> pagination = RecommendationService.getPages(page, totalCount);
+
         mv.addObject("movies", movies);
-        
+        mv.addObject("pagination", pagination);
+
         // If an error occured, you can set the following property with the
         // error message to show the error message to the user.
         // An error message can be optionally specified with a url query parameter too.

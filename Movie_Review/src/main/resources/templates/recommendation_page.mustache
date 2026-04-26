@@ -9,6 +9,9 @@
     <div class="search_and_results_container">
         <div class="results-wrapper">
             {{> fragments/movie_cards_container}}
+            
+            {{> fragments/pagination_container}}
+            
             {{^movies}}
                 <div class="no-results-centered">
                     <i class="fa fa-search"></i>
