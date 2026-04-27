@@ -30,6 +30,7 @@ public class MovieService {
 
     public DetailedMovie getMovies(String currentUserId, String movieId) {
         // For all movie_info - production companies and genres
+        // get the average rating from users and the movie information
         final String movieInfoQuery
                 = "SELECT m.*, AVG(r.rating) avg_rating "
                 + UtilityService.getListedQuery()
@@ -38,60 +39,19 @@ public class MovieService {
                 + "WHERE m.movie_id = ? "
                 + "GROUP BY m.movie_id";
 
-        final String movieGenresQuery
-                = "SELECT g.name name "
-                + "FROM genre g, movie_genre mg "
-                + "WHERE mg.movie_id = ? "
-                + "AND g.genre_id = mg.genre_id";
-
-         final String movieReviewsQuery
-                = "SELECT r.*, CONCAT(u.firstName, ' ', u.lastName) as userName "
-                + "FROM review r, user u "
-                + "WHERE r.movie_id = ? "
-                + "AND r.user_id = u.user_id";
-
-        final String movieCompaniesQuery
-                = "SELECT pc.name name "
-                + "FROM production_company pc, movie_company mc "
-                + "WHERE mc.movie_id = ? "
-                + "AND mc.company_id = pc.company_id";
-
         DetailedMovie movie = null;
 
         try (Connection conn = dataSource.getConnection()) {
-            PreparedStatement pstmtGenres = conn.prepareStatement(movieGenresQuery);
-            pstmtGenres.setString(1, movieId);
-            ResultSet genresRs = pstmtGenres.executeQuery();
-            List<String> genres = new ArrayList<>();
-            while (genresRs.next()) {
-                genres.add(genresRs.getString("name"));
-            }
+            List<String> genres = getGenres(movieId);
 
-            PreparedStatement pstmtCompanies = conn.prepareStatement(movieCompaniesQuery);
-            pstmtCompanies.setString(1, movieId);
-            ResultSet companyRs = pstmtCompanies.executeQuery();
-            List<String> companies = new ArrayList<>();
-            while (companyRs.next()) {
-                companies.add(companyRs.getString("name"));
-            }
+            List<String> companies = getCompanies(movieId);
 
-            PreparedStatement pstmtReviews = conn.prepareStatement(movieReviewsQuery);
-            pstmtReviews.setString(1, movieId);
-            ResultSet reviewsRs = pstmtReviews.executeQuery();
-            List<Review> reviews = new ArrayList<>();
-            while (reviewsRs.next()) {
-                String userName = reviewsRs.getString("userName");
-                String content = reviewsRs.getString("content");
-                String postDate = reviewsRs.getString("postDate");
-                Double rating = reviewsRs.getDouble("rating");
-
-                Review review = new Review(userName, content, postDate, rating);
-                reviews.add(review);
-            }
+           List<Review> reviewMadeByUser = getReviews(movieId, currentUserId, true);
+           List<Review> reviewsMadeByOthers = getReviews(movieId, currentUserId, false);
 
             PreparedStatement pstmtMovieInfo = conn.prepareStatement(movieInfoQuery);
             pstmtMovieInfo.setString(1, currentUserId); // for the isListed query
-            pstmtMovieInfo.setString(2, movieId); // for the isListed query
+            pstmtMovieInfo.setString(2, movieId); 
 
             ResultSet movieRs = pstmtMovieInfo.executeQuery();
             if (movieRs.next()) {
@@ -113,7 +73,7 @@ public class MovieService {
                 double popularity = movieRs.getDouble("popularity");
                 double avg_rating = movieRs.getDouble("avg_rating");
 
-                movie = new DetailedMovie(movieId, title, poster, tagline, isListed, vote_average, vote_count, release_date, revenue, budget, homepage, runtime, original_language, original_title, overview, popularity, avg_rating, genres, companies, reviews);
+                movie = new DetailedMovie(movieId, title, poster, tagline, isListed, vote_average, vote_count, release_date, revenue, budget, homepage, runtime, original_language, original_title, overview, popularity, avg_rating, genres, companies, reviewMadeByUser, reviewsMadeByOthers);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -121,4 +81,80 @@ public class MovieService {
 
         return movie;
     }
+
+    public List<String> getGenres(String movieId) throws SQLException {
+        final String movieGenresQuery
+                = "SELECT g.name name "
+                + "FROM genre g, movie_genre mg "
+                + "WHERE mg.movie_id = ? "
+                + "AND g.genre_id = mg.genre_id";
+
+        List<String> genres = new ArrayList<>();
+
+        Connection conn = dataSource.getConnection();
+        PreparedStatement pstmtGenres = conn.prepareStatement(movieGenresQuery);
+        pstmtGenres.setString(1, movieId);
+        ResultSet genresRs = pstmtGenres.executeQuery();
+        while (genresRs.next()) {
+            genres.add(genresRs.getString("name"));
+        }
+
+        return genres;
+    }
+
+    public List<String> getCompanies(String movieId) throws SQLException {
+        final String movieCompaniesQuery
+                = "SELECT pc.name name "
+                + "FROM production_company pc, movie_company mc "
+                + "WHERE mc.movie_id = ? "
+                + "AND mc.company_id = pc.company_id";
+
+        List<String> companies = new ArrayList<>();
+
+        Connection conn = dataSource.getConnection();
+        PreparedStatement pstmtCompanies = conn.prepareStatement(movieCompaniesQuery);
+        pstmtCompanies.setString(1, movieId);
+        ResultSet companyRs = pstmtCompanies.executeQuery();
+        while (companyRs.next()) {
+            companies.add(companyRs.getString("name"));
+        }
+        return companies;
+    }
+
+    /*
+    * @param forUser - true if getting only reviews made by user, false if getting reviews made by everyone but user
+     */
+    public List<Review> getReviews(String movieId, String currentUserId, Boolean forUser) throws SQLException {
+        String operator = forUser ? "=" : "!=";
+        final String movieReviewsQuery
+                = "SELECT r.*, DATE_FORMAT(postDate, '%b %d, %Y') as post_date, CONCAT(u.firstName, ' ', u.lastName) as userName, u.user_id user_id "
+                + "FROM review r, user u "
+                + "WHERE r.movie_id = ? "
+                + "AND r.user_id = u.user_id "
+                + "AND r.user_id " + operator + " ? ";
+
+        List<Review> reviews = null; // initialized to null for mustache logic
+
+        Connection conn = dataSource.getConnection();
+        PreparedStatement pstmtReviews = conn.prepareStatement(movieReviewsQuery);
+        pstmtReviews.setString(1, movieId);
+        pstmtReviews.setString(2, currentUserId);
+        ResultSet reviewsRs = pstmtReviews.executeQuery();
+        while (reviewsRs.next()) {
+            if (reviews == null) {
+                reviews = new ArrayList<>();
+            }
+            String userName = reviewsRs.getString("userName");
+            String userId = reviewsRs.getString("user_id");
+            String reviewId = reviewsRs.getString("review_id");
+            String content = reviewsRs.getString("content");
+            String postDate = reviewsRs.getString("post_date");
+            Double rating = reviewsRs.getDouble("rating");
+
+            Review review = new Review(userName, userId, reviewId, movieId, content, postDate, rating, forUser);
+            reviews.add(review);
+        }
+        return reviews;
+    }
+
 }
