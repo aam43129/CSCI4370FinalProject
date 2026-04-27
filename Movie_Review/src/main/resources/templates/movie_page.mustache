@@ -11,6 +11,9 @@
     {{#movie}}
         {{> fragments/movie}}
     {{/movie}}
+    {{^movie}}
+        <p class="text-center">No movie found with the given id.</p>
+    {{/movie}}
 
 </body>
 

@@ -2,7 +2,6 @@ package movie.review.app.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.PreparedStatement;
 
 import movie.review.app.models.Page;
 

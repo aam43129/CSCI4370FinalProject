@@ -1,5 +1,7 @@
 package movie.review.app.models;
 
+import java.util.List;
+
 import movie.review.app.services.UtilityService;
 
 /**
@@ -18,14 +20,18 @@ public class DetailedMovie extends Movie {
     private final String original_title;
     private final String overview;
     private final double popularity;
+    private final double avg_rating;
+    public final List<String> genres;
+    public final List<String> productionCompanies;
+    public final List<Review> reviews;
 
     private final Boolean showOgTitle;
-    private final String[] starClasses;
+    private final String[] imdb_star_classes;
+    private final String[] avg_rating_star_classes;
     private final int hours;
     private final int minutes;
     public final String formatted_budget;
     public final String formatted_revenue;
-
 
     /**
      * Constructs a Comment with specified details, leveraging the BasicPost
@@ -49,7 +55,10 @@ public class DetailedMovie extends Movie {
      * @param overview
      * @param popularity
      */
-    public DetailedMovie(String movieId, String title, String poster, String tagline, Boolean isListed, double vote_average, int vote_count, String release_date, long revenue, long budget, String homepage, int runtime, String original_language, String original_title, String overview, double popularity) {
+    public DetailedMovie(String movieId, String title, String poster, String tagline, Boolean isListed,
+            double vote_average, int vote_count, String release_date, long revenue, long budget, String homepage,
+            int runtime, String original_language, String original_title, String overview, double popularity,
+            double avg_rating, List<String> genres, List<String> productionCompanies, List<Review> reviews) {
         super(movieId, title, poster, tagline, isListed);
         this.vote_average = vote_average;
         this.vote_count = vote_count;
@@ -62,9 +71,14 @@ public class DetailedMovie extends Movie {
         this.original_title = original_title;
         this.overview = overview;
         this.popularity = popularity;
+        this.avg_rating = avg_rating;
+        this.genres = genres;
+        this.productionCompanies = productionCompanies;
+        this.reviews = reviews;
 
         this.showOgTitle = !(title.equals(original_title));
-        this.starClasses = UtilityService.getStarClassStrings(10, vote_average);
+        this.imdb_star_classes = UtilityService.getStarClassStrings(10, vote_average);
+        this.avg_rating_star_classes = UtilityService.getStarClassStrings(5, avg_rating);
         this.hours = runtime / 60;
         this.minutes = runtime % 60;
         this.formatted_budget = formatLargeNum(budget);

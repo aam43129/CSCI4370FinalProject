@@ -9,10 +9,10 @@ public class Review {
 
     // In our db, a movie should also have review_id and movie_id, but
     // because those aren't used in our mustache files, I won't add them.
-    private final String userId;
+    private final String userName;
     private final String content;
     private final String postDate;
-    private final int rating; // 
+    private final double rating; // 
 
     private String[] reviewStars; // for the UI
 
@@ -20,13 +20,13 @@ public class Review {
      * Constructs a Comment with specified details, leveraging the BasicPost
      * structure.
      *
-     * @param userId the unique identifier of the user who wrote the review
+     * @param userName the first and last name of the user who wrote the review
      * @param content the content of the review
      * @param postDate the date that the review was posted
      * @param rating the date that the review was posted
      */
-    public Review(String userId, String content, String postDate, int rating) {
-        this.userId = userId;
+    public Review(String userName, String content, String postDate, double rating) {
+        this.userName = userName;
         this.content = content;
         this.postDate = postDate;
         this.rating = rating;

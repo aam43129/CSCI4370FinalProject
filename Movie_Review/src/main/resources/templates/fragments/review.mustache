@@ -1,13 +1,15 @@
-<div class="reviews-container">
-    <h3>{{user_id}}</h3>
-    <div class="rating-date">
-        <div class="star-rating">
-            {{#starIcons}}
-                <i class="fa {{.}} checked"></i>
-            {{/starIcons}}
-            <span class="rating-number">{{ratingValue}}</span>
+<div class="review-card">
+    <div class="review-header">
+        <div class="review-user-info">
+            <h3>{{userName}}</h3>
+            <div class="star-rating existing-review">
+                {{#reviewStars}}
+                    <i class="fa {{.}} checked"></i>
+                {{/reviewStars}}
+                <span class="rating-number">{{rating}}</span>
+            </div>
         </div>
-        <p>{{postDate}}</p>
+        <p class="review-date">{{postDate}}</p>
     </div>
-    <p>{{content}}</p>
+    <p class="review-content">{{content}}</p>
 </div>

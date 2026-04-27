@@ -28,14 +28,6 @@ public class ProfileController {
     private final ProfileService profileService;
     private final UserService userService;
 
-    /**
-     * This is the specific function that handles the root URL itself.
-     *
-     * Note that this accepts a URL parameter called error. The value to this
-     * parameter can be shown to the user as an error message. See notes in
-     * HashtagSearchController.java regarding URL parameters.
-     */
-    // private final UserService userService;
     @Autowired
     public ProfileController(ProfileService profileService, UserService userService) {
         this.profileService = profileService;

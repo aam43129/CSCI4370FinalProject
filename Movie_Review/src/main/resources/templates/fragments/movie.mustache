@@ -28,11 +28,20 @@
         {{/showOgTitle}}
 
         <div class="rating-display">
-            {{#starClasses}}
+            <span class="rating-label" style="font-size: 0.8rem; color: #888; width: 50px;">TMDB:</span>
+            {{#imdb_star_classes}}
                 <i class="fa {{.}}"></i>
-            {{/starClasses}}
+            {{/imdb_star_classes}}
             <span class="rating-value">{{vote_average}}</span>
             <span class="vote-count">({{vote_count}} votes)</span>
+        </div>
+
+        <div class="rating-display">
+            <span class="rating-label" style="font-size: 0.8rem; color: #888; width: 50px;">Users:</span>
+            {{#avg_rating_star_classes}}
+                <i class="fa {{.}}"></i>
+            {{/avg_rating_star_classes}}
+            <span class="rating-value">{{avg_rating}}</span>
         </div>
 
         <div class="movie-metadata">
@@ -51,6 +60,24 @@
             <div class="stat-box">
                 <label>Revenue</label>
                 <p>${{formatted_revenue}}</p>
+            </div>
+        </div>
+
+        <div class="cloud-wrapper">
+            <div class="genres cloud">
+                <h3>Genres</h3>
+                {{#genres}}
+                    <span class="genre-tag">{{.}}</span>
+                {{/genres}}
+            </div>
+        </div>
+
+        <div class="cloud-wrapper" style="margin-top: 15px;">
+            <div class="companies cloud">
+                <h3>Production</h3>
+                {{#productionCompanies}}
+                    <span class="company-tag">{{.}}</span>
+                {{/productionCompanies}}
             </div>
         </div>
     </div>
