@@ -23,7 +23,8 @@ public class DetailedMovie extends Movie {
     private final double avg_rating;
     public final List<String> genres;
     public final List<String> productionCompanies;
-    public final List<Review> reviews;
+    public final List<Review> reviewMadeByUser; // List<Review> for compatability with a method in MovieService
+    public final List<Review> reviewsMadeByOthers;
 
     private final Boolean showOgTitle;
     private final String[] imdb_star_classes;
@@ -58,7 +59,7 @@ public class DetailedMovie extends Movie {
     public DetailedMovie(String movieId, String title, String poster, String tagline, Boolean isListed,
             double vote_average, int vote_count, String release_date, long revenue, long budget, String homepage,
             int runtime, String original_language, String original_title, String overview, double popularity,
-            double avg_rating, List<String> genres, List<String> productionCompanies, List<Review> reviews) {
+            double avg_rating, List<String> genres, List<String> productionCompanies, List<Review> reviewMadeByUser, List<Review> reviewsMadeByOthers) {
         super(movieId, title, poster, tagline, isListed);
         this.vote_average = vote_average;
         this.vote_count = vote_count;
@@ -74,7 +75,8 @@ public class DetailedMovie extends Movie {
         this.avg_rating = avg_rating;
         this.genres = genres;
         this.productionCompanies = productionCompanies;
-        this.reviews = reviews;
+        this.reviewMadeByUser = reviewMadeByUser;
+        this.reviewsMadeByOthers = reviewsMadeByOthers;
 
         this.showOgTitle = !(title.equals(original_title));
         this.imdb_star_classes = UtilityService.getStarClassStrings(10, vote_average);

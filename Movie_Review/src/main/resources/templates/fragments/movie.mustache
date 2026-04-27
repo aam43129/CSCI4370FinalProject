@@ -84,9 +84,21 @@
 
     <div class="reviews-container">
         <h3>User Reviews</h3>
-        {{> fragments/new_review_form}}
-        {{#reviews}}
+        {{#reviewMadeByUser}}
             {{> fragments/review}}
-        {{/reviews}}
+        {{/reviewMadeByUser}}
+        {{^reviewMadeByUser}}
+            {{> fragments/new_review_form}}
+        {{/reviewMadeByUser}}
+
+        {{#reviewsMadeByOthers}}
+            {{> fragments/review}}
+        {{/reviewsMadeByOthers}}
+        {{^reviewsMadeByOthers}}
+            <p class="text-center">No Reviews</p>
+            <p class="text-center">No Reviews</p>
+            <p class="text-center">No Reviews</p>
+            <p class="text-center">No Reviews</p>
+        {{/reviewsMadeByOthers}}
     </div>
 </div>

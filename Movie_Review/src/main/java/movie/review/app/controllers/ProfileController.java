@@ -5,16 +5,15 @@
  */
 package movie.review.app.controllers;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import movie.review.app.models.Movie;
+import movie.review.app.models.Profile;
 import movie.review.app.services.ProfileService;
 import movie.review.app.services.UserService;
 
@@ -35,15 +34,28 @@ public class ProfileController {
     }
 
     @GetMapping
-    public ModelAndView webpage(@RequestParam(defaultValue = "1") int page,
+    public ModelAndView webpage(@RequestParam(name = "error", required = false) String error) {
+        ModelAndView mv = new ModelAndView("profile_page");
+
+        String currentUserId = userService.getLoggedInUser().getUserId();
+
+        Profile profile = profileService.getProfile(currentUserId, currentUserId);
+
+        mv.addObject("profile", profile);
+
+        return mv;
+    }
+
+    @GetMapping("/{userId}")
+    public ModelAndView userProfile(@PathVariable("userId") String userId,
             @RequestParam(name = "error", required = false) String error) {
         ModelAndView mv = new ModelAndView("profile_page");
 
         String currentUserId = userService.getLoggedInUser().getUserId();
 
-        List<Movie> movies = profileService.getMovies(currentUserId);
+        Profile profile = profileService.getProfile(currentUserId, userId);
 
-        mv.addObject("movies", movies);
+        mv.addObject("profile", profile);
 
         return mv;
     }
