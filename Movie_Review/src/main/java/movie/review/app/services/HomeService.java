@@ -28,7 +28,7 @@ public class HomeService {
     }
 
     public List<Movie> getMovies(String userId) {
-        final String sql
+        /*final String sql
                 = "SELECT m.movie_id movie_id, m.title title, m.poster poster, m.tagline tagline "
                 + UtilityService.getListedQuery() // selects isListed as a column
                 + "FROM movie m, review r "
@@ -36,11 +36,22 @@ public class HomeService {
                 + "AND m.movie_id = r.movie_id "
                 + "GROUP BY m.movie_id "
                 + "ORDER BY AVG(r.rating) DESC "
-                + "LIMIT 10;";
+                + "LIMIT 10;";*/
+        final String sql =
+                "SELECT m.movie_id, m.title, " +
+                        "IFNULL(m.poster, 'https://via.placeholder.com/500x750?text=No+Poster') as poster, " +
+                        "IFNULL(m.tagline, '') as tagline, " +
+                        "IF(uml.user_id IS NULL, 0, 1) as isListed " +
+                        "FROM Movie m " +
+                        "LEFT JOIN user_movie_list uml ON m.movie_id = uml.movie_id AND uml.user_id = ? " +
+                        "WHERE m.vote_count > 100 " +
+                        "ORDER BY m.popularity DESC " +
+                        "LIMIT 12;";
 
         List<Movie> movies = new ArrayList<>();
 
-        try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, userId); // for the listedQuery 
 
             try (ResultSet rs = pstmt.executeQuery()) {

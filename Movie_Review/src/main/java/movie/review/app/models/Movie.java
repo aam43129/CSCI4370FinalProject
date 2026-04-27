@@ -38,4 +38,24 @@ public class Movie {
         this.tagline = tagline;
         this.isListed = isListed;
     }
+
+    public String getMovieId() {
+        return movieId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getPoster() {
+        return poster;
+    }
+
+    public String getTagline() {
+        return tagline;
+    }
+
+    public boolean getIsListed() {
+        return isListed;
+    }
 }
