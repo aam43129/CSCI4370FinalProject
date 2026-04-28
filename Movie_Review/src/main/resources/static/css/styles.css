@@ -716,7 +716,8 @@ a {
 
 .review-controls {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 12px;
     align-items: center;
 }
 
