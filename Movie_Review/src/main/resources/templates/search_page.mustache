@@ -6,12 +6,9 @@
 
     {{> fragments/top_bar}}
 
+    <h1 class="list-title">Results Matching "{{search_query}}"</h1>
 
-    {{> fragments/no_content_message}}
-
-    <h1 class="list-title">Results Matching "{{#search_query}}"</h1>
-    {{> fragments/movies_container}}
+    {{> fragments/movie_cards_container}}
 
 </body>
-
 </html>
