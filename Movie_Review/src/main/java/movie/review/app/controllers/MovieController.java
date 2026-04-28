@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import movie.review.app.models.DetailedMovie;
 import movie.review.app.services.MovieService;
 import movie.review.app.services.UserService;
-
-import movie.review.app.models.DetailedMovie;
 
 @Controller
 @RequestMapping("/movies")
@@ -65,6 +64,68 @@ public class MovieController {
         return "redirect:/post/" + movieId + "?error=" + message;
     }
 
+    @GetMapping("/{movieId}/{reviewId}/edit")
+    public String editReview(@PathVariable("movieId") String movieId,
+            @PathVariable String reviewId) {
+        String currentUserId = userService.getLoggedInUser().getUserId();
+
+        // boolean isAuthorized = movieService.getIsAuthorized(currentUserId, reviewId)
+        boolean isAuthorized = reviewId.equals(movieId); // this is a placeholder for the above
+
+        ModelAndView mv = new ModelAndView();
+        if (isAuthorized) {
+            // this is my current guess for the implementation
+            // get review info in a review object
+            // mv.addObject("review", review); 
+            // add the rating, so the stars can update
+            // String rating = movieService.getRating(review.getRating); // should return rating but rounded down to nearest whole or half (ex: 4.3 -> 4 or 4.7->4.5)
+            // mv.addObject("rating" + rating, true);
+            return "edit_review_page";
+        } else {
+            String message = URLEncoder.encode("Unauthorized access",
+                    StandardCharsets.UTF_8);
+            return "redirect:/movies/" + movieId + "/?error=" + message;
+        }
+    }
+
+    @PostMapping("/{movieId}/{reviewId}/update")
+    public String updateReview(@PathVariable String movieId,
+            @PathVariable String reviewId,
+            @PathVariable String content,
+            @PathVariable double rating) {
+
+        // boolean isAuthorized = movieService.getIsAuthorized(currentUserId, reviewId)
+        boolean isAuthorized = reviewId.equals(movieId); // this is a placeholder for the above
+
+        if (isAuthorized) {
+            // this is my current guess for the implementation
+            // update review info with new content and rating
+            return "redirect:/movies/" + movieId;
+        } else {
+            String message = URLEncoder.encode("Unauthorized access",
+                    StandardCharsets.UTF_8);
+            return "redirect:/movies/" + movieId + "/" + reviewId + "edit/?error=" + message;
+        }
+    }
+
+    @PostMapping("/{movieId}/{reviewId}/delete")
+    public String deleteReview(@PathVariable String movieId,
+            @PathVariable String reviewId) {
+
+        // boolean isAuthorized = movieService.getIsAuthorized(currentUserId, reviewId)
+        boolean isAuthorized = reviewId.equals(movieId); // this is a placeholder for the above
+
+        if (isAuthorized) {
+            // this is my current guess for the implementation
+            // delete review info with new content and rating
+            return "redirect:/movies/" + movieId;
+        } else {
+            String message = URLEncoder.encode("Unauthorized access",
+                    StandardCharsets.UTF_8);
+            return "redirect:/movies/" + movieId + "/?error=" + message;
+        }
+    }
+
     @PostMapping("/{movieId}/create-review")
     public String postReview(@PathVariable("movieId") String movieId,
             @RequestParam(name = "rating") String rating,
@@ -89,4 +150,3 @@ public class MovieController {
     }
 
 }
-

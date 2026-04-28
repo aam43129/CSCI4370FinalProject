@@ -89,10 +89,12 @@ public class DetailedMovie extends Movie {
 
     public String formatLargeNum(double num) {
         String ret = "";
-        if (num / 1_000_000 >= 1) {
-            ret += Math.round(num / 1_000_000) + "M";
+        if (num / 1_000_000_000 >= 1) {
+            ret += String.format("%.2f", num / 1_000_000_000);
+        } else if (num / 1_000_000 >= 1) {
+            ret += String.format("%.2f", num / 1_000_000);
         } else if (num / 1_000 >= 1) {
-            ret += Math.round(num / 1_000) + "K";
+            ret += String.format("%.1f", num / 1_000);
         } else {
             ret += num;
         }

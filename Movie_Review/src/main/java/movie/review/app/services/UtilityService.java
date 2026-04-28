@@ -22,18 +22,18 @@ public class UtilityService {
     * This method is for returning the pagination.
     * eg: for 8 pages: 1, 2, 3, 4, ... 7, 8
      */
-    public static List<Page> getPages(int pageNum, int numResults) {
-
-        int totalPages = (int) Math.ceil(numResults / (double) 20);
+    public static List<Page> getPages(int pageNum, int totalPages) {
 
         List<Page> pagination = new ArrayList<>();
 
+        Boolean hasAddedSeparator = false;
         for (int i = 1; i <= totalPages; i++) {
             // Only add first 4 pages and the last 2 pages
-            if (i <= 4 || i > totalPages - 2) {
+            if (i <= 4 || i > totalPages - 2 || (i == pageNum || i == pageNum + 1 || i == pageNum - 1)) {
                 pagination.add(new Page(i, i == pageNum));
             } // Add the "..." separator one time after page 4
-            else if (i == 5) {
+            else if (i > 5 && !hasAddedSeparator) {
+                hasAddedSeparator = true;
                 pagination.add(Page.setSeparator());
             }
         }

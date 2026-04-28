@@ -28,4 +28,8 @@ public class Page {
         return item;
     }
 
+    public int getPageNum() {
+        return pageNum;
+    }
+
 }
