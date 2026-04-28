@@ -27,13 +27,21 @@ public class SearchController {
     }
 
     @GetMapping
-    public ModelAndView webpage(@RequestParam(name = "query") String query) {
-        ModelAndView mv = new ModelAndView("search_page");
+    public ModelAndView webpage(@RequestParam(name = "query", required = false) String query) {
+    	ModelAndView mv = new ModelAndView("search_page");
 
-        List<Movie> movies = searchService.getMovies(query);
+    	if (query == null || query.trim().isEmpty()) {
+        	mv.addObject("movies", List.of());
+        	mv.addObject("search_query", "");
+        	return mv;
+    	}
 
-        mv.addObject("movies", movies);
-        
-        return mv;
-    }
+    	String userId = userService.getLoggedInUser().getUserId();
+    	List<Movie> movies = searchService.getMovies(query.trim(), userId);
+
+    	mv.addObject("movies", movies);
+    	mv.addObject("search_query", query.trim());
+
+    	return mv;
+	}
 }
