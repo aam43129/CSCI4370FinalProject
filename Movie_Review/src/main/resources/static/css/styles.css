@@ -1,8 +1,7 @@
 * {
     box-sizing: border-box;
     scrollbar-width: thin;
-    scrollbar-base-color: #222831;
-    scrollbar-color: #393E46;
+    scrollbar-color: #393E46 #222831;
 }
 
 ::-webkit-scrollbar-track {
