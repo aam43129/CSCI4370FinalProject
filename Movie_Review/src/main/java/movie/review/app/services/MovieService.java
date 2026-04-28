@@ -89,8 +89,7 @@ public class MovieService {
 
         List<String> genres = new ArrayList<>();
 
-        try (Connection conn = dataSource.getConnection();
-                PreparedStatement pstmtGenres = conn.prepareStatement(movieGenresQuery)) {
+        try (Connection conn = dataSource.getConnection(); PreparedStatement pstmtGenres = conn.prepareStatement(movieGenresQuery)) {
             pstmtGenres.setString(1, movieId);
             try (ResultSet genresRs = pstmtGenres.executeQuery()) {
                 while (genresRs.next()) {
@@ -109,8 +108,7 @@ public class MovieService {
 
         List<String> companies = new ArrayList<>();
 
-        try (Connection conn = dataSource.getConnection();
-                PreparedStatement pstmtCompanies = conn.prepareStatement(movieCompaniesQuery)) {
+        try (Connection conn = dataSource.getConnection(); PreparedStatement pstmtCompanies = conn.prepareStatement(movieCompaniesQuery)) {
             pstmtCompanies.setString(1, movieId);
             try (ResultSet companyRs = pstmtCompanies.executeQuery()) {
                 while (companyRs.next()) {
@@ -131,8 +129,7 @@ public class MovieService {
 
         List<Review> reviews = null;
 
-        try (Connection conn = dataSource.getConnection();
-                PreparedStatement pstmtReviews = conn.prepareStatement(movieReviewsQuery)) {
+        try (Connection conn = dataSource.getConnection(); PreparedStatement pstmtReviews = conn.prepareStatement(movieReviewsQuery)) {
             pstmtReviews.setString(1, movieId);
             pstmtReviews.setString(2, currentUserId);
             try (ResultSet reviewsRs = pstmtReviews.executeQuery()) {
@@ -153,6 +150,77 @@ public class MovieService {
             }
         }
         return reviews;
+    }
+
+    public boolean isInList(String userId, String movieId) {
+        final String sql = "SELECT * "
+                + "FROM user_movie_list "
+                + "WHERE user_id = ? AND movie_id = ?";
+
+        try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Following line replaces the first place holder with username.
+            pstmt.setString(1, userId);
+            pstmt.setString(2, movieId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                // Traverse the result rows one at a time.
+                // Note: This specific while loop will only run at most once 
+                // since user_id and movie_id are unique together
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public String addToList(String userId, String movieId) {
+        if (isInList(userId, movieId)) {
+            return "already existed";
+        }
+
+        final String sql = "INSERT INTO user_movie_list (user_id, movie_id) VALUES (?, ?)";
+
+        try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, userId);
+            pstmt.setString(2, movieId);
+
+            if (pstmt.executeUpdate() == 1) {
+                return "success";
+            } else {
+                return "error";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "error";
+        }
+    }
+
+    public String removeFromList(String userId, String movieId) {
+        if (!isInList(userId, movieId)) {
+            return "already removed";
+        }
+
+        final String sql = "DELETE FROM user_movie_list where user_id = ? and movie_id = ?";
+
+        try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, userId);
+            pstmt.setString(2, movieId);
+
+            if (pstmt.executeUpdate() == 1) {
+                return "success";
+            } else {
+                return "error";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "error";
+        }
     }
 
 }

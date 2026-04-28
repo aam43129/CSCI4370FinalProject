@@ -51,17 +51,22 @@ public class MovieController {
             @PathVariable("isAdd") Boolean isAdd) {
         String currentUserId = userService.getLoggedInUser().getUserId();
 
-        // boolean isSuccess = isAdd
-        //         ? movieService.addToList(currentUserId, movieId)
-        //         : movieService.removeFromList(currentUserId, movieId);
-        boolean isSuccess = isAdd;
+        String status = isAdd
+                ? movieService.addToList(currentUserId, movieId)
+                : movieService.removeFromList(currentUserId, movieId);
 
-        if (isSuccess) {
+        if (status.equals("success")) {
             return "redirect:/movies/" + movieId;
+        } else if (status.equals("already existed") || status.equals("already removed")) {
+            String error = isAdd ? "That movie already existed your list." : "That movie w your list.";
+            String message = URLEncoder.encode(error, StandardCharsets.UTF_8);
+            return "redirect:/movies/" + movieId + "?error=" + message;
+        } else {
+            String error = isAdd ? "Failed to add movie to your list." : "Failed to remove movie from your list.";
+            String message = URLEncoder.encode(error + " Please try again.",
+                    StandardCharsets.UTF_8);
+            return "redirect:/movies/" + movieId + "?error=" + message;
         }
-        String message = URLEncoder.encode("Failed to (un)like the post. Please try again.",
-                StandardCharsets.UTF_8);
-        return "redirect:/post/" + movieId + "?error=" + message;
     }
 
     @GetMapping("/{movieId}/{reviewId}/edit")

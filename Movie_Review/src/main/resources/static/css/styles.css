@@ -5,11 +5,11 @@
 }
 
 ::-webkit-scrollbar-track {
-  border-radius: 10px;
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 10px;
+    border-radius: 10px;
 }
 
 body {
@@ -695,13 +695,13 @@ input:checked+.genre-input-tag {
 }
 
 .snap-reviews-container::-webkit-scrollbar-track {
-  background: #393E46;
-  border-radius: 10px;
+    background: #393E46;
+    border-radius: 10px;
 }
 
 .snap-reviews-container::-webkit-scrollbar-thumb {
-  background: #222831;
-  border-radius: 10px;
+    background: #222831;
+    border-radius: 10px;
 }
 
 .review-card {
@@ -928,7 +928,6 @@ a {
     display: inline-flex;
     flex-direction: row-reverse;
     justify-content: flex-end;
-    align-items: center;
     position: relative;
     height: 2em;
     line-height: 2em;
