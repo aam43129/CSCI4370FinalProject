@@ -25,15 +25,105 @@ public class RecommendationService {
         this.dataSource = dataSource;
     }
 
-    public static String buildQuery(String userId, String sortBy, String sortByOrder, String minRating, String[] genres, String prodCompany) {
-        // building a query to return to the controller
-        // for usage with getMovies and getPages
-        // ideally this query will not have the select portion in it
-        String fromClause = "FROM movie m "; // depends on what you're filtering on
-        String filterClause = "WHERE m.popularity > 80 "; // minRating, genres, and prodCompany
-        String orderByClause = "ORDER BY m.popularity desc"; // sortBy and sortByOrder
-        return fromClause + filterClause + orderByClause;
+    public static String buildQuery(String userId, String sortBy, String sortByOrder, String minRating, String[] genres,
+            String prodCompany) {
+
+        StringBuilder from = new StringBuilder("FROM movie m ");
+        StringBuilder where = new StringBuilder("WHERE 1=1 ");
+
+        // MINIMUM RATING filter - average of user reviews
+        if (minRating != null && !minRating.isEmpty()) {
+            where.append("AND m.movie_id IN (")
+                    .append("SELECT r.movie_id FROM review r ")
+                    .append("GROUP BY r.movie_id ")
+                    .append("HAVING AVG(r.rating) >= ").append(minRating)
+                    .append(") ");
+        }
+
+        // GENRE filter
+        if (genres != null && genres.length > 0) {
+            where.append("AND m.movie_id IN (")
+                    .append("SELECT mg.movie_id FROM movie_genre mg ")
+                    .append("JOIN genre g ON mg.genre_id = g.genre_id ")
+                    .append("WHERE g.name IN (");
+
+            for (int i = 0; i < genres.length; i++) {
+                String dbGenreName = mapGenreName(genres[i]);
+                where.append("'").append(dbGenreName).append("'");
+                if (i < genres.length - 1)
+                    where.append(", ");
+            }
+            where.append(")) ");
+        }
+
+        // PRODUCTION COMPANY filter
+        if (prodCompany != null && !prodCompany.isEmpty()) {
+            where.append("AND m.movie_id IN (")
+                    .append("SELECT mc.movie_id FROM movie_company mc ")
+                    .append("JOIN production_company pc ON mc.company_id = pc.company_id ")
+                    .append("WHERE pc.name LIKE '%").append(prodCompany).append("%'")
+                    .append(") ");
+        }
+
+        // SORT
+        String orderBy;
+        if (sortBy == null || sortBy.isEmpty()) {
+            orderBy = "ORDER BY m.popularity DESC ";
+        } else {
+            String order = (sortByOrder != null && sortByOrder.equalsIgnoreCase("asc")) ? "ASC" : "DESC";
+            String orderByColumn;
+            switch (sortBy) {
+                case "popularity":
+                    orderByColumn = "m.popularity";
+                    break;
+                case "runtime":
+                    orderByColumn = "m.runtime";
+                    break;
+                case "rating":
+                    orderByColumn = "m.vote_average";
+                    break;
+                case "revenue":
+                    orderByColumn = "m.revenue";
+                    break;
+                case "releaseDate":
+                    orderByColumn = "m.release_date";
+                    break;
+                default:
+                    orderByColumn = "m.popularity";
+                    break;
+            }
+            orderBy = "ORDER BY " + orderByColumn + " " + order + " ";
+        }
+
+        System.out.println("DEBUG QUERY: " + from.toString() + where.toString() + orderBy);
+        return from.toString() + where.toString() + orderBy;
     }
+
+// Maps frontend checkbox values to database genre names
+private static String mapGenreName(String value) {
+    switch (value) {
+        case "action":        return "Action";
+        case "adventure":     return "Adventure";
+        case "animation":     return "Animation";
+        case "comedy":        return "Comedy";
+        case "crime":         return "Crime";
+        case "documentary":   return "Documentary";
+        case "drama":         return "Drama";
+        case "family":        return "Family";
+        case "fantasy":       return "Fantasy";
+        case "history":       return "History";
+        case "horror":        return "Horror";
+        case "music":         return "Music";
+        case "mystery":       return "Mystery";
+        case "romance":       return "Romance";
+        case "sci-fi":        return "Science Fiction";
+        case "thriller":      return "Thriller";
+        case "tv-movie":      return "TV Movie";
+        case "war":           return "War";
+        case "western":       return "Western";
+        default:              return value;
+    }
+}
 
     public RecommendationResponse getMovies(String currentUserId, int pageNum, String queryFragment) {
         List<Movie> movies = new ArrayList<>();
@@ -49,10 +139,11 @@ public class RecommendationService {
         int offset = (pageNum - 1) * 20;
         query1 += " LIMIT 20 OFFSET " + offset;
 
-        try (Connection conn = dataSource.getConnection()) {
-            // Get the movies
-            PreparedStatement pstmt1 = conn.prepareStatement(query1);
-            pstmt1.setString(1, currentUserId); // for the isListedQuery
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement pstmt1 = conn.prepareStatement(query1);
+                PreparedStatement pstmt2 = conn.prepareStatement(query2)) {
+
+            pstmt1.setString(1, currentUserId);
 
             try (ResultSet rs = pstmt1.executeQuery()) {
                 while (rs.next()) {
@@ -61,17 +152,16 @@ public class RecommendationService {
                     String poster = rs.getString("poster");
                     String tagline = rs.getString("tagline");
                     Boolean isListed = rs.getInt("isListed") == 1;
-
                     movies.add(new Movie(movieId, title, poster, tagline, isListed));
                 }
             }
-            // Get the total count
-            PreparedStatement pstmt2 = conn.prepareStatement(query2);
+
             try (ResultSet rs = pstmt2.executeQuery()) {
                 if (rs.next()) {
                     totalCount = rs.getInt(1);
                 }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -327,6 +327,7 @@ nav a img {
     align-items: center;
     color: white;
     background-color: #222831;
+    margin-top: auto;
 }
 
 .pagination a,
@@ -394,6 +395,13 @@ nav a img {
 
 .sort-controls select {
     flex: 1;
+    background-color: #393E46;
+    color: white;
+}
+
+select option {
+    background-color: #393E46;
+    color: white;
 }
 
 .sort-btn {

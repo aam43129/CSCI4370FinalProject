@@ -51,7 +51,7 @@ public class RecommendationController {
             @RequestParam(name = "sortBy", required = false) String sortBy,
             @RequestParam(name = "sortByOrder", required = false) String sortByOrder,
             @RequestParam(name = "minRating", required = false) String minRating,
-            @RequestParam(name = "genre[]", required = false) String[] genres,
+            @RequestParam(name = "genre", required = false) String[] genres,
             @RequestParam(name = "prodCompany", required = false) String prodCompany,
             @RequestParam(name = "error", required = false) String error) {
         ModelAndView mv = new ModelAndView("recommendation_page");
@@ -79,6 +79,31 @@ public class RecommendationController {
         if (movies.isEmpty()) {
             mv.addObject("isNoContent", true);
         } //if 
+
+        mv.addObject("isPopularity", "popularity".equals(sortBy));
+        mv.addObject("isRating", "rating".equals(sortBy));
+        mv.addObject("isRuntime", "runtime".equals(sortBy));
+        mv.addObject("isRevenue", "revenue".equals(sortBy));
+        mv.addObject("isReleaseDate", "releaseDate".equals(sortBy));
+        mv.addObject("isAsc", "asc".equals(sortByOrder));
+
+        // Build base URL for pagination to preserve filters
+        StringBuilder baseUrl = new StringBuilder("/recommendations?");
+        if (sortBy != null && !sortBy.isEmpty())
+            baseUrl.append("sortBy=").append(sortBy).append("&");
+        if (sortByOrder != null && !sortByOrder.isEmpty())
+            baseUrl.append("sortByOrder=").append(sortByOrder).append("&");
+        if (minRating != null && !minRating.isEmpty())
+            baseUrl.append("minRating=").append(minRating).append("&");
+        if (genres != null) {
+            for (String genre : genres) {
+                baseUrl.append("genre=").append(genre).append("&");
+            }
+        }
+        if (prodCompany != null && !prodCompany.isEmpty())
+            baseUrl.append("prodCompany=").append(prodCompany).append("&");
+
+        mv.addObject("baseUrl", baseUrl.toString());
 
         return mv;
     }

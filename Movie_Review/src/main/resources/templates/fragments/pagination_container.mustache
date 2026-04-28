@@ -1,6 +1,6 @@
 <div class="pagination">
   {{#prev_page}}
-    <a href="?page={{prev_page}}">&laquo;</a>
+    <a href="{{baseUrl}}page={{prev_page}}">&laquo;</a>
   {{/prev_page}}
 
   {{#pagination}}
@@ -9,13 +9,13 @@
     {{/isSeparator}}
     
     {{^isSeparator}}
-      <a href="?page={{pageNum}}" class="{{#isCurrent}}active{{/isCurrent}}">
+      <a href="{{baseUrl}}page={{pageNum}}" class="{{#isCurrent}}active{{/isCurrent}}">
         {{pageNum}}
       </a>
     {{/isSeparator}}
   {{/pagination}}
 
   {{#next_page}}
-    <a href="?page={{next_page}}">&raquo;</a>
+    <a href="{{baseUrl}}page={{next_page}}">&raquo;</a>
   {{/next_page}}
 </div>

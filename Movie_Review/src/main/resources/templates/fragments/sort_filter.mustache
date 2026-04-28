@@ -4,7 +4,7 @@
         <label>Sort Results</label>
         <div class="sort-controls">
             <select onchange="this.form.submit()" name="sortBy" class="short-input">
-                <option value="" hidden>Sort By</option>
+                <option value="">Sort By</option>
                 <option value="popularity" {{#isPopularity}}selected{{/isPopularity}}>Popularity</option>
                 <option value="rating" {{#isRating}}selected{{/isRating}}>Rating</option>
                 <option value="runtime" {{#isRuntime}}selected{{/isRuntime}}>Runtime</option>
