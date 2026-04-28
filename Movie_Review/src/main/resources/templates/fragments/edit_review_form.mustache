@@ -1,0 +1,30 @@
+<div class="review-form">
+    <form method="post" action="/movies/{{review.movieId}}/{{review.id}}/update">
+        
+        <div class="review-form-stars">
+            <label>Rating: </label>
+            
+            <div class="star-rating">
+                <input type="radio" id="star5" name="rating" value="5" {{#rating5}}checked{{/rating5}} /><label for="star5" title="5 stars"></label>
+                
+                <input type="radio" id="star4half" name="rating" value="4.5" {{#rating4.5}}checked{{/rating4.5}} /><label class="half" for="star4half"></label>
+                
+                <input type="radio" id="star4" name="rating" value="4" {{#rating4}}checked{{/rating4}} /><label for="star4"></label>
+                
+                <input type="radio" id="star3half" name="rating" value="3.5" {{#rating3.5}}checked{{/rating3.5}} /><label class="half" for="star3half"></label>
+                
+                <input type="radio" id="star3" name="rating" value="3" {{#rating3}}checked{{/rating3}} /><label for="star3"></label>
+                
+                </div>
+
+            <input type="radio" id="star0" name="rating" value="0" {{#rating0}}checked{{/rating0}} />
+            <label for="star0" class="reset-option" title="0 stars">
+                <i class="fa fa-ban"></i>
+            </label>
+        </div>
+
+        <textarea name="content" class="framed" placeholder="Express your thoughts about this movie!">{{review.content}}</textarea>
+        <input type="hidden" name="reviewId" value="{{review.reviewId}}">
+        <button type="submit" class="action-button">Update Post</button>
+    </form>
+</div>

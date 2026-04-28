@@ -63,11 +63,17 @@ public class RecommendationController {
 
         List<Movie> movies = response.getMovies();
         int totalCount = response.getTotalCount();
+        int totalPages = (int) Math.ceil(totalCount / (double) 20);
 
-        List<Page> pagination = UtilityService.getPages(page, totalCount);
+        List<Page> pagination = UtilityService.getPages(page, totalPages);
 
         mv.addObject("movies", movies);
         mv.addObject("pagination", pagination);
+        
+        String prev_page = (page == 1) ? null : (page - 1) + "";
+        String next_page = (page == totalPages) ? null : (page + 1) + "";
+        mv.addObject("prev_page", prev_page);
+        mv.addObject("next_page", next_page);
 
         // If an error occured, you can set the following property with the
         // error message to show the error message to the user.
