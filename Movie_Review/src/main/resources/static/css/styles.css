@@ -666,9 +666,9 @@ input:checked+.genre-input-tag {
 }
 
 .review-card {
-    background: rgba(255, 255, 255, 0.03);
+    background: #ffffff08;
     /* Subtle dark card */
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid #ffffff14;
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 15px;
@@ -704,6 +704,17 @@ a {
     line-height: 1.6;
     color: #e0e0e0;
     margin: 10px 0 0 0;
+}
+
+.review-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.review-controls button{
+    background: none;
+    color: #009BFF;
 }
 
 .review-form-footer {
@@ -990,4 +1001,10 @@ a {
 
 .link {
     margin-left: 16pt;
+}
+
+.grey-background {
+    background-color: #ffffff08;
+    padding: 20px;
+    border-radius: 10px;
 }
