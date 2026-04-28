@@ -16,9 +16,7 @@
                 {{^isCurrentUserProfile}}
                     <h1>{{userName}}'s List</h1>
                 {{/isCurrentUserProfile}}
-                {{#movies}}
-                    {{> fragments/movie_cards_container}}
-                {{/movies}}
+                {{> fragments/movie_cards_container}}
 
                 {{^movies}}
                     <p class="grey-background text-center">No Movies</p>
