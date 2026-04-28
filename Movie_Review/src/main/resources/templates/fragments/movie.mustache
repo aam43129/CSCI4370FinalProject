@@ -84,18 +84,21 @@
 
     <div class="reviews-container">
         <h3>User Reviews</h3>
-        {{#reviewMadeByUser}}
-            {{> fragments/review}}
-        {{/reviewMadeByUser}}
         {{^reviewMadeByUser}}
             {{> fragments/new_review_form}}
         {{/reviewMadeByUser}}
+        
+        <div class="snap-reviews-container">
+            {{#reviewMadeByUser}}
+                {{> fragments/review}}
+            {{/reviewMadeByUser}}
 
-        {{#reviewsMadeByOthers}}
-            {{> fragments/review}}
-        {{/reviewsMadeByOthers}}
-        {{^reviewsMadeByOthers}}
-            <p class="grey-background text-center">No Reviews</p>
-        {{/reviewsMadeByOthers}}
+            {{#reviewsMadeByOthers}}
+                {{> fragments/review}}
+            {{/reviewsMadeByOthers}}
+            {{^reviewsMadeByOthers}}
+                <p class="grey-background text-center">No Reviews</p>
+            {{/reviewsMadeByOthers}}
+        </div>
     </div>
 </div>

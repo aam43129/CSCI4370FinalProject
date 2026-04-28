@@ -1,5 +1,16 @@
 * {
     box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-base-color: #222831;
+    scrollbar-color: #393E46;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
 }
 
 body {
@@ -670,13 +681,34 @@ input:checked+.genre-input-tag {
     margin: 30px auto;
     border: 1px solid #2d333b;
     border-radius: 24px;
-    width: clamp(300px, 80%, 800px);
+    width: clamp(400px, 80%, 800px);
+}
+
+.snap-reviews-container {
+    overflow-y: auto;
+    scroll-snap-align: start;
+    scroll-snap-type: y mandatory;
+    height: auto;
+    max-height: 400px;
+    padding: 10px;
+    scrollbar-color: #393E46 #222831;
+    scrollbar-width: thin;
+}
+
+.snap-reviews-container::-webkit-scrollbar-track {
+  background: #393E46;
+  border-radius: 10px;
+}
+
+.snap-reviews-container::-webkit-scrollbar-thumb {
+  background: #222831;
+  border-radius: 10px;
 }
 
 .review-card {
-    background: #ffffff08;
-    /* Subtle dark card */
-    border: 1px solid #ffffff14;
+    scroll-snap-align: start;
+    background: #ffffff14;
+    border: 1px solid #ffffff20;
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 15px;
@@ -721,7 +753,7 @@ a {
     align-items: center;
 }
 
-.review-controls button{
+.review-controls button {
     background: none;
     color: #009BFF;
 }
@@ -897,6 +929,7 @@ a {
     display: inline-flex;
     flex-direction: row-reverse;
     justify-content: flex-end;
+    align-items: center;
     position: relative;
     height: 2em;
     line-height: 2em;
