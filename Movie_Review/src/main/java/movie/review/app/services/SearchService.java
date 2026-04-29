@@ -32,7 +32,7 @@ public class SearchService {
                 "IF(uml.user_id IS NULL, 0, 1) AS isListed " +
                 "FROM Movie m " +
                 "LEFT JOIN user_movie_list uml ON m.movie_id = uml.movie_id AND uml.user_id = ? " +
-                "WHERE LOWER(m.title) LIKE LOWER(?) " +
+                "WHERE LOWER(m.title) LIKE LOWER(%?%) " +
                 "ORDER BY m.popularity DESC " +
                 "LIMIT 50;";
 
@@ -42,7 +42,7 @@ public class SearchService {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, userId);
-            pstmt.setString(2, "%" + query + "%");
+            pstmt.setString(2, query);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
