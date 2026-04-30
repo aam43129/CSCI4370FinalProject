@@ -141,7 +141,8 @@ nav a img {
         gap: 5px;
     }
 
-    nav a, .nav-search-logout a {
+    nav a,
+    .nav-search-logout a {
         display: flex;
         flex: auto;
         flex-direction: column;
@@ -170,7 +171,8 @@ nav a img {
         gap: 10px;
     }
 
-    nav a, .nav-search-logout a {
+    nav a,
+    .nav-search-logout a {
         display: flex;
         flex: auto;
         flex-direction: column;
@@ -207,10 +209,38 @@ nav a img {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background: linear-gradient(black, #007bff4d),
+        url('/images/cinema.avif');
+    background-size: cover;
+    background-position: center;
+    padding: 60px 0;
     text-align: center;
-    background: linear-gradient(to bottom right, black, black, #009BFF);
+    letter-spacing: 1px;
+    border: black;
     color: #ffffff;
-    padding: 5px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #007bff4d;
+    box-shadow: 0 10px 30px #007bff4d;
+}
+
+@media (min-width: 768px) {
+    .banner {
+        background: linear-gradient(black, #007bff4d),
+            url('/images/cinema4.avif');
+        padding: 30px 0;
+    }
+}
+
+.banner h1 {
+    font-size: 2.75rem;
+    font-weight: bold;
+    margin: 5px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.banner p {
+    text-transform: uppercase;
+    font-size: .95rem;
 }
 
 .trending-container {
@@ -436,6 +466,20 @@ nav a img {
     gap: 20px;
     text-align: left;
     border-radius: 8px;
+    overflow-y: auto; 
+    height: 100%;
+    scrollbar-color: #222831 #393E46;
+    scrollbar-width: thin;
+}
+
+.browse-form::-webkit-scrollbar-track {
+    background: #222831;
+    border-radius: 10px;
+}
+
+.browse-form::-webkit-scrollbar-thumb {
+    background: #393E46;
+    border-radius: 10px;
 }
 
 .filter-group {
@@ -459,8 +503,11 @@ nav a img {
 .sort_filter_container {
     width: 300px;
     position: sticky;
-    top: 0;
-    bottom: 0;
+    top: 20px;
+    height: calc(100vh - 40px);
+    display: flex;
+    flex-direction: column;
+    bottom: 20px;
 }
 
 .sort-controls {
@@ -790,7 +837,8 @@ input:checked+.genre-input-tag {
     margin-bottom: 12px;
 }
 
-.review-user-info h3, .review-user-info a {
+.review-user-info h3,
+.review-user-info a {
     margin: 0 0 5px 0;
     font-size: 1.1rem;
     color: #009BFF;
@@ -876,8 +924,13 @@ input:checked+.genre-input-tag {
     border-radius: 4pt;
 }
 
+.container h1 {
+    margin: 16px;
+}
+
 .container form input {
-    margin-bottom: 3px;
+    margin: 8px;
+    width: 80%;
 }
 
 .container a {
@@ -914,7 +967,7 @@ input:checked+.genre-input-tag {
     display: flex;
     flex-direction: column;
     gap: 24px;
-    padding: 16px 24px 24px 24px;
+    padding: 16px 24px 16px 24px;
     border: none;
 }
 

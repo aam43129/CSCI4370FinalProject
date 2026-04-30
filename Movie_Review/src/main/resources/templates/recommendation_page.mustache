@@ -9,15 +9,17 @@
     <div class="search_and_results_container">
         <div class="results-wrapper">
             {{> fragments/movie_cards_container}}
-            
-            {{> fragments/pagination_container}}
-            
+            {{#movies.0}}
+                {{> fragments/pagination_container}}
+            {{/movies.0}}    
+
             {{^movies}}
                 <div class="no-results-centered">
                     <i class="fa fa-search"></i>
                     <p>No movies found for this search.</p>
                 </div>
             {{/movies}}
+
         </div>
 
         <div class="sort_filter_container">
