@@ -19,6 +19,7 @@ import movie.review.app.models.Review;
  * This service contains home-related functions.
  */
 @Service
+
 public class MovieService {
 
     private final DataSource dataSource;
@@ -223,46 +224,96 @@ public class MovieService {
         }
     }
 
-    public boolean postReview(String userId, String movieId, String rating, String content) {
-        String sql = "INSERT INTO Review (user_id, movie_id, content, rating, postDate) VALUES (?, ?, ?, ?, NOW())";
+    public boolean postReview(String userId, String movieId, double rating, String content) {
+        final String sql = "INSERT INTO Review (user_id, movie_id, content, rating, postDate) VALUES (?, ?, ?, ?, NOW())";
 
-        try {
-            jdbcTemplate.update(sql, userId, movieId, content, Double.parseDouble(rating));
-            return true;
-        } catch (Exception e) {
-            System.out.println("Error posting review: " + e.getMessage());
+        try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, userId);
+            pstmt.setString(2, movieId);
+            pstmt.setString(3, content);
+            pstmt.setDouble(4, rating);
+
+            return pstmt.executeUpdate() == 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }
 
+    /**
+     * Theoretically, this method isn't needed, but it makes the controller
+     * logic for the error messages easier
+     */
     public boolean isUserReviewOwner(String userId, String reviewId) {
-        String sql = "SELECT COUNT(*) FROM review WHERE review_id = ? AND user_id = ?";
+        final String sql = "SELECT COUNT(*) FROM review WHERE review_id = ? AND user_id = ?";
 
-        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, reviewId, userId);
-        return count != null && count > 0;
+        try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, userId);
+            pstmt.setString(2, reviewId);
+
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean deleteReview(String reviewId) {
-        String sql = "DELETE FROM review WHERE review_id = ?";
+        final String sql = "DELETE FROM review WHERE review_id = ?";
 
-        try {
-            jdbcTemplate.update(sql, reviewId);
-            return true;
-        } catch (Exception e) {
-            System.out.println("Error deleting review: " + e.getMessage());
+        try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, reviewId);
+            if (pstmt.executeUpdate() == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }
 
     public boolean updateReview(String reviewId, String content, double rating) {
-        String sql = "UPDATE review SET content = ?, rating = ? WHERE review_id = ?";
+        final String sql = "UPDATE review SET content = ?, rating = ? WHERE review_id = ?";
 
-        try {
-            jdbcTemplate.update(sql, content, rating, reviewId);
-            return true;
-        } catch (Exception e) {
-            System.out.println("Error updating review: " + e.getMessage());
+        try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, content);
+            pstmt.setDouble(2, rating);
+            pstmt.setString(3, reviewId);
+
+            return pstmt.executeUpdate() == 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
+    }
+
+    public Review getReview(String movieId, String reviewId) {
+        final String sql = "SELECT r.*, CONCAT(firstName, ' ', lastName) as userName "
+        + "FROM review r, user u "
+        + "WHERE review_id = ?"
+        + "AND r.user_id = u.user_id";
+        Review review = null;
+        try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, reviewId);
+            ResultSet reviewsRs = pstmt.executeQuery();
+            if (reviewsRs.next()) {
+                String userName = reviewsRs.getString("userName");
+                String userId = reviewsRs.getString("user_id");
+                String content = reviewsRs.getString("content");
+                String postDate = reviewsRs.getString("postDate");
+                Double rating = reviewsRs.getDouble("rating");
+
+                review = new Review(userName, userId, reviewId, movieId, content, postDate, rating, true);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return review;
     }
 }

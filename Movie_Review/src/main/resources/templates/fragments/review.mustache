@@ -16,10 +16,10 @@
     
     {{#isUserReview}}
         <div class="review-controls">
-            <form method="get" action="/movies/{{movieId}}/{{reviewId}}/edit">
+            <form method="get" action="/movies/{{movieId}}/reviews/{{reviewId}}/edit">
                 <button class="fa fa-pencil-square-o"></button>
             </form>
-            <form method="POST" action="/movies/{{movieId}}/{{reviewId}}/delete">
+            <form method="POST" action="/movies/{{movieId}}/reviews/{{reviewId}}/delete">
                 <button class="fa fa-trash"></button>
             </form>
         </div>
