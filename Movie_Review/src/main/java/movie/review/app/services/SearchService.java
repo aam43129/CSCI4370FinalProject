@@ -32,7 +32,7 @@ public class SearchService {
                 "IF(uml.user_id IS NULL, 0, 1) AS isListed " +
                 "FROM Movie m " +
                 "LEFT JOIN user_movie_list uml ON m.movie_id = uml.movie_id AND uml.user_id = ? " +
-                "WHERE LOWER(m.title) LIKE LOWER(%?%) " +
+                "WHERE LOWER(m.title) LIKE CONCAT('%', LOWER(?),'%') " +
                 "ORDER BY m.popularity DESC " +
                 "LIMIT 50;";
 

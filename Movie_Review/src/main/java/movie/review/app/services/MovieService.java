@@ -222,8 +222,9 @@ public class MovieService {
             return "error";
         }
     }
+
     public boolean postReview(String userId, String movieId, String rating, String content) {
-        String sql = "INSERT INTO Review (user_id, movie_id, content, rating, postDate) VALUES (?, ?, ?, ?, CURDATE())";
+        String sql = "INSERT INTO Review (user_id, movie_id, content, rating, postDate) VALUES (?, ?, ?, ?, NOW())";
 
         try {
             jdbcTemplate.update(sql, userId, movieId, content, Double.parseDouble(rating));
@@ -233,6 +234,7 @@ public class MovieService {
             return false;
         }
     }
+
     public boolean isUserReviewOwner(String userId, String reviewId) {
         String sql = "SELECT COUNT(*) FROM review WHERE review_id = ? AND user_id = ?";
 
@@ -251,6 +253,7 @@ public class MovieService {
             return false;
         }
     }
+
     public boolean updateReview(String reviewId, String content, double rating) {
         String sql = "UPDATE review SET content = ?, rating = ? WHERE review_id = ?";
 
