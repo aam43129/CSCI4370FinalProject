@@ -466,7 +466,7 @@ nav a img {
     gap: 20px;
     text-align: left;
     border-radius: 8px;
-    overflow-y: auto; 
+    overflow-y: auto;
     height: 100%;
     scrollbar-color: #222831 #393E46;
     scrollbar-width: thin;
@@ -1065,7 +1065,14 @@ input:checked+.genre-input-tag {
 }
 
 .star-rating input {
-    display: none;
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute !important;
+    white-space: nowrap;
+    width: 1px;
 }
 
 .star-rating label {
@@ -1079,20 +1086,27 @@ input:checked+.genre-input-tag {
     overflow: hidden;
 }
 
-.star-rating label:not(.half):before {
+.star-rating label:not(.half, .whole):before {
     content: "\f005";
     margin-left: -0.5em;
-    /* Shift to show the right half */
 }
 
-/* Half star labels */
+.star-rating label.whole {
+    width: 1em;
+    overflow: visible;
+}
+
+.star-rating label.whole:before {
+    content: "\f005";
+    margin-left: 0; 
+}
+
 .star-rating label.half:before {
     content: "\f005";
     position: absolute;
     left: 0;
 }
 
-/* Hover and Checked Logic */
 .star-rating label:hover,
 .star-rating label:hover~label,
 .star-rating input:checked~label {
