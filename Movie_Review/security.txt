@@ -1,0 +1,6 @@
+
+User passwords are stored safely using BCrypt hashing. When a user signs up, their password is converted into a hashed version before being saved in the database. The actual password is never stored. When logging in, the entered password is checked against the stored hash using BCryptPasswordEncoder.matches().
+
+The application uses session-based login. After a user logs in, their information is saved in the session so the app knows they are logged in. An authentication interceptor checks if a user is logged in before allowing access to certain pages. If not, the user is redirected to the login page.
+
+The application uses prepared statements for all database queries. This means the SQL query is written first with placeholders, and user input is added separately. This keeps the query structure safe and ensures that user input is treated only as data, not as part of the SQL command.
