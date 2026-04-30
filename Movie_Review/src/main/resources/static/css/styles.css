@@ -249,6 +249,8 @@ nav a img {
     background: linear-gradient(to top left, black, black, black, black, #009BFF);
     border-radius: 8px;
     box-shadow: 3px 3px 8px #0099ff30;
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
 .list-title {
@@ -262,7 +264,7 @@ nav a img {
     margin: 20px 0;
 }
 
-.movies_container {
+/*.movies_container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 20px;
@@ -274,6 +276,26 @@ nav a img {
     width: 100%;
     position: relative;
     margin-bottom: 8pt;
+    overflow: hidden;
+    transition: transform .5s ease;
+    border-radius: 8px;
+    aspect-ratio: 2 / 3;
+}*/
+.movies_container {
+    display: flex;
+    /* Change auto-fill to auto-fit and set a max width */
+    grid-template-columns: repeat(auto-fill, minmax(180px, 220px));
+    gap: 25px;
+    padding: 20px;
+    justify-content: start; /* Align to the left instead of stretching */
+}
+
+.movie-card {
+    flex: 0 0 180px;
+    height: auto; /* Allow the aspect ratio to set height */
+    width: 100%;
+    max-width: 220px; /* Prevent it from ever becoming giant */
+    position: relative;
     overflow: hidden;
     transition: transform .5s ease;
     border-radius: 8px;

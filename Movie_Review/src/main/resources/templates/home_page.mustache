@@ -12,11 +12,26 @@
 
     <h1 class="list-title">Trending Movies</h1>
     <div class="trending-container">
-        {{> fragments/movie_cards_container}}
-        {{^movies}}
-            <p class="grey-background text-center">No movies found for this search.</p>
-        {{/movies}}
+        <div class="movies_container"> {{#trendingMovies}}
+                {{> fragments/movie_card}}
+            {{/trendingMovies}}
+        </div>
+        {{^trendingMovies}}
+            <p class="grey-background text-center">No trending movies found.</p>
+        {{/trendingMovies}}
     </div>
+
+   {{#genreSections}}
+       <h1 class="list-title">Top in {{genreName}}</h1>
+       <div class="trending-container">
+           <div class="movies_container">
+               {{#movies}}
+                   {{> fragments/movie_card}}
+               {{/movies}}
+           </div>
+       </div>
+   {{/genreSections}}
+
 </body>
 
 </html>

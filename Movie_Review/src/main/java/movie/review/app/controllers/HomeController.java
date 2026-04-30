@@ -51,10 +51,21 @@ public class HomeController {
 
         String currentUserId = userService.getLoggedInUser().getUserId();
 
-        List<Movie> movies = homeService.getMovies(currentUserId);
+        //List<Movie> movies = homeService.getMovies(currentUserId);
 
         // mv.addObject("movies", movies);
-        mv.addObject("movies", movies);
+       //mv.addObject("movies", movies);
+
+        mv.addObject("trendingMovies", homeService.getMovies(currentUserId));
+        List<String> topGenres = homeService.getTopGenresForUser(currentUserId);
+        List<GenreSection> genreSections = new ArrayList<>();
+        for (String genre : topGenres) {
+            List<Movie> genreMovies = homeService.getMovies(currentUserId, genre);
+            if (!genreMovies.isEmpty()) {
+                genreSections.add(new GenreSection(genre, genreMovies));
+            }
+        }
+        mv.addObject("genreSections", genreSections);
 
         // If an error occured, you can set the following property with the
         // error message to show the error message to the user.
@@ -64,6 +75,20 @@ public class HomeController {
 
         // There is no "no-content" object because it is handled in the html
         return mv;
+    }
+
+    public static class GenreSection {
+        private String genreName;
+        private List<Movie> movies;
+
+        public GenreSection(String genreName, List<Movie> movies) {
+            this.genreName = genreName;
+            this.movies = movies;
+        }
+
+        // Getters so Mustache can find the keys {{genreName}} and {{movies}}
+        public String getGenreName() { return genreName; }
+        public List<Movie> getMovies() { return movies; }
     }
 
 }
