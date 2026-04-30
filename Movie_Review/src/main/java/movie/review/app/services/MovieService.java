@@ -222,5 +222,44 @@ public class MovieService {
             return "error";
         }
     }
+    public boolean postReview(String userId, String movieId, String rating, String content) {
+        String sql = "INSERT INTO Review (user_id, movie_id, content, rating, postDate) VALUES (?, ?, ?, ?, CURDATE())";
 
+        try {
+            jdbcTemplate.update(sql, userId, movieId, content, Double.parseDouble(rating));
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error posting review: " + e.getMessage());
+            return false;
+        }
+    }
+    public boolean isUserReviewOwner(String userId, String reviewId) {
+        String sql = "SELECT COUNT(*) FROM review WHERE review_id = ? AND user_id = ?";
+
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, reviewId, userId);
+        return count != null && count > 0;
+    }
+
+    public boolean deleteReview(String reviewId) {
+        String sql = "DELETE FROM review WHERE review_id = ?";
+
+        try {
+            jdbcTemplate.update(sql, reviewId);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error deleting review: " + e.getMessage());
+            return false;
+        }
+    }
+    public boolean updateReview(String reviewId, String content, double rating) {
+        String sql = "UPDATE review SET content = ?, rating = ? WHERE review_id = ?";
+
+        try {
+            jdbcTemplate.update(sql, content, rating, reviewId);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error updating review: " + e.getMessage());
+            return false;
+        }
+    }
 }
