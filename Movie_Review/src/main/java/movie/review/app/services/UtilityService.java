@@ -58,4 +58,15 @@ public class UtilityService {
         }
         return starClasses;
     }
+
+    public static double getFormattedRating(double rawRating) {
+        double firstDigit = (int) rawRating;
+        double decimal = rawRating * 10 % 10;
+        if (decimal < 5) {
+            decimal = 0;
+        } else {
+            decimal = 0.5;
+        }
+        return firstDigit + decimal;
+    }
 }

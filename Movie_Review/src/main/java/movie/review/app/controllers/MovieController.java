@@ -16,6 +16,7 @@ import movie.review.app.models.DetailedMovie;
 import movie.review.app.models.Review;
 import movie.review.app.services.MovieService;
 import movie.review.app.services.UserService;
+import movie.review.app.services.UtilityService;
 
 @Controller
 @RequestMapping("/movies")
@@ -86,7 +87,8 @@ public class MovieController {
                 ModelAndView mv = new ModelAndView("edit_review_page");
                 mv.addObject("review", review);
 
-                double rating = review.getRating();
+                double rating = UtilityService.getFormattedRating(review.getRating());
+                System.out.println(rating);
                 mv.addObject("rating" + rating, true);
                 return mv;
             } else {
