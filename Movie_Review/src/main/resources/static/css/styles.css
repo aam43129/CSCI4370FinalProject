@@ -249,8 +249,8 @@ nav a img {
     background: linear-gradient(to top left, black, black, black, black, #009BFF);
     border-radius: 8px;
     box-shadow: 3px 3px 8px #0099ff30;
-    overflow-x: auto;
-    white-space: nowrap;
+    overflow-x: hidden;
+    /*white-space: nowrap;*/
 }
 
 .list-title {
@@ -283,23 +283,26 @@ nav a img {
 }*/
 .movies_container {
     display: flex;
-    /* Change auto-fill to auto-fit and set a max width */
-    grid-template-columns: repeat(auto-fill, minmax(180px, 220px));
+    flex-wrap: wrap;
     gap: 25px;
     padding: 20px;
-    justify-content: start; /* Align to the left instead of stretching */
+    justify-content: flex-start;
+    width: 100%;
 }
 
 .movie-card {
-    flex: 0 0 180px;
-    height: auto; /* Allow the aspect ratio to set height */
-    width: 100%;
-    max-width: 220px; /* Prevent it from ever becoming giant */
+    flex: 0 1 180px;
+    max-width: 220px;
     position: relative;
     overflow: hidden;
     transition: transform .5s ease;
     border-radius: 8px;
     aspect-ratio: 2 / 3;
+}
+
+.horizontal-row {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
 }
 
 .movie-card:hover {
