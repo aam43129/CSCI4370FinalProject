@@ -1,8 +1,4 @@
-/**
- * Copyright (c) 2024 Sami Menik, PhD. All rights reserved.
- *
- *  *This is a project developed by Dr. Menik to give the students an opportunity to apply database concepts learned in the class in a real world project. Permission is granted to host a running version of this software and to use images or videos of this work solely for the purpose of demonstrating the work to potential employers. Any form of reproduction, distribution, or transmission of the software's source code, in part or whole, without the prior written consent of the copyright owner, is strictly prohibited.
- */
+
 package movie.review.app.controllers;
 
 import java.util.List;
@@ -22,9 +18,6 @@ import movie.review.app.services.RecommendationService;
 import movie.review.app.services.UserService;
 import movie.review.app.services.UtilityService;
 
-/**
- * This controller handles the home page and some of it's sub URLs.
- */
 @Controller
 @RequestMapping("/recommendations")
 public class RecommendationController {
@@ -32,14 +25,6 @@ public class RecommendationController {
     private final RecommendationService recommendationService;
     private final UserService userService;
 
-    /**
-     * This is the specific function that handles the root URL itself.
-     *
-     * Note that this accepts a URL parameter called error. The value to this
-     * parameter can be shown to the user as an error message. See notes in
-     * HashtagSearchController.java regarding URL parameters.
-     */
-    // private final UserService userService;
     @Autowired
     public RecommendationController(RecommendationService recommendationService, UserService userService) {
         this.recommendationService = recommendationService;
@@ -47,7 +32,7 @@ public class RecommendationController {
     }
 
     @GetMapping
-    public ModelAndView webpage(@RequestParam(defaultValue = "1") int page, // for the pagination
+    public ModelAndView webpage(@RequestParam(defaultValue = "1") int page,
             @RequestParam(name = "sortBy", required = false) String sortBy,
             @RequestParam(name = "sortByOrder", required = false) String sortByOrder,
             @RequestParam(name = "minRating", required = false) String minRating,
@@ -59,7 +44,8 @@ public class RecommendationController {
         String currentUserId = userService.getLoggedInUser().getUserId();
 
         String query = RecommendationService.buildQuery(currentUserId, sortBy, sortByOrder, minRating, genres, prodCompany);
-        RecommendationResponse response = recommendationService.getMovies(currentUserId, page, query);
+        List<Object> filterParams = RecommendationService.buildParams(minRating, genres, prodCompany);
+        RecommendationResponse response = recommendationService.getMovies(currentUserId, page, query, filterParams);
 
         List<Movie> movies = response.getMovies();
         int totalCount = response.getTotalCount();
@@ -69,22 +55,18 @@ public class RecommendationController {
 
         mv.addObject("movies", movies);
         mv.addObject("pagination", pagination);
-        
+
         String prev_page = (page == 1) ? null : (page - 1) + "";
         String next_page = (page == totalPages) ? null : (page + 1) + "";
         mv.addObject("prev_page", prev_page);
         mv.addObject("next_page", next_page);
 
-        // If an error occured, you can set the following property with the
-        // error message to show the error message to the user.
-        // An error message can be optionally specified with a url query parameter too.
         String errorMessage = error;
         mv.addObject("errorMessage", errorMessage);
 
-        // if there is no post to display, then give a no post comment
         if (movies.isEmpty()) {
             mv.addObject("isNoContent", true);
-        } //if 
+        }
 
         mv.addObject("isPopularity", "popularity".equals(sortBy));
         mv.addObject("isRating", "rating".equals(sortBy));
@@ -93,7 +75,6 @@ public class RecommendationController {
         mv.addObject("isReleaseDate", "releaseDate".equals(sortBy));
         mv.addObject("isAsc", "asc".equals(sortByOrder));
 
-        // Build base URL for pagination to preserve filters
         StringBuilder baseUrl = new StringBuilder("/recommendations?");
         if (sortBy != null && !sortBy.isEmpty())
             baseUrl.append("sortBy=").append(sortBy).append("&");
