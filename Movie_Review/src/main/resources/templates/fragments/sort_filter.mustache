@@ -25,74 +25,74 @@
 
     <div class="filter-group">
         <label for="minRating">Minimum Rating</label>
-        <input type="number" id="minRating" name="minRating" min="1" max="5" step="0.5" class="short-input" placeholder="1-5">
+        <input type="number" id="minRating" name="minRating" min="1" max="5" step="0.5" class="short-input" placeholder="1-5" {{#minRating}}value={{minRating}}{{/minRating}}>
     </div>
 
     <div class="filter-group">
         <label>Genres</label>
         <div class="cloud">
-            <input type="checkbox" name="genre" value="action" id="action" hidden>
+            <input type="checkbox" name="genre" value="action" id="action" {{#isAction}}checked{{/isAction}} hidden>
             <label for="action" class="genre-input-tag">Action</label>
 
-            <input type="checkbox" name="genre" value="adventure" id="adventure" hidden>
+            <input type="checkbox" name="genre" value="adventure" id="adventure" {{#isAdventure}}checked{{/isAdventure}} hidden>
             <label for="adventure" class="genre-input-tag">Adventure</label>
 
-            <input type="checkbox" name="genre" value="animation" id="animation" hidden>
+            <input type="checkbox" name="genre" value="animation" id="animation" {{#isAnimation}}checked{{/isAnimation}} hidden>
             <label for="animation" class="genre-input-tag">Animation</label>
 
-            <input type="checkbox" name="genre" value="comedy" id="comedy" hidden>
+            <input type="checkbox" name="genre" value="comedy" id="comedy" {{#isComedy}}checked{{/isComedy}} hidden>
             <label for="comedy" class="genre-input-tag">Comedy</label>
 
-            <input type="checkbox" name="genre" value="crime" id="crime" hidden>
+            <input type="checkbox" name="genre" value="crime" id="crime" {{#isCrime}}checked{{/isCrime}} hidden>
             <label for="crime" class="genre-input-tag">Crime</label>
 
-            <input type="checkbox" name="genre" value="documentary" id="doc" hidden>
+            <input type="checkbox" name="genre" value="documentary" id="doc" {{#isDoc}}checked{{/isDoc}} hidden>
             <label for="doc" class="genre-input-tag">Documentary</label>
 
-            <input type="checkbox" name="genre" value="drama" id="drama" hidden>
+            <input type="checkbox" name="genre" value="drama" id="drama" {{#isDrama}}checked{{/isDrama}} hidden>
             <label for="drama" class="genre-input-tag">Drama</label>
 
-            <input type="checkbox" name="genre" value="family" id="family" hidden>
+            <input type="checkbox" name="genre" value="family" id="family" {{#isFamily}}checked{{/isFamily}} hidden>
             <label for="family" class="genre-input-tag">Family</label>
 
-            <input type="checkbox" name="genre" value="fantasy" id="fantasy" hidden>
+            <input type="checkbox" name="genre" value="fantasy" id="fantasy" {{#isFantasy}}checked{{/isFantasy}} hidden>
             <label for="fantasy" class="genre-input-tag">Fantasy</label>
 
-            <input type="checkbox" name="genre" value="history" id="history" hidden>
+            <input type="checkbox" name="genre" value="history" id="history" {{#isHistory}}checked{{/isHistory}} hidden>
             <label for="history" class="genre-input-tag">History</label>
 
-            <input type="checkbox" name="genre" value="horror" id="horror" hidden>
+            <input type="checkbox" name="genre" value="horror" id="horror" {{#isHorror}}checked{{/isHorror}} hidden>
             <label for="horror" class="genre-input-tag">Horror</label>
 
-            <input type="checkbox" name="genre" value="music" id="music" hidden>
+            <input type="checkbox" name="genre" value="music" id="music" {{#isMusic}}checked{{/isMusic}} hidden>
             <label for="music" class="genre-input-tag">Music</label>
 
-            <input type="checkbox" name="genre" value="mystery" id="mystery" hidden>
+            <input type="checkbox" name="genre" value="mystery" id="mystery" {{#isMystery}}checked{{/isMystery}} hidden>
             <label for="mystery" class="genre-input-tag">Mystery</label>
 
-            <input type="checkbox" name="genre" value="romance" id="romance" hidden>
+            <input type="checkbox" name="genre" value="romance" id="romance" {{#isRomance}}checked{{/isRomance}} hidden>
             <label for="romance" class="genre-input-tag">Romance</label>
 
-            <input type="checkbox" name="genre" value="sci-fi" id="scifi" hidden>
+            <input type="checkbox" name="genre" value="sci-fi" id="scifi" {{#isScifi}}checked{{/isScifi}} hidden>
             <label for="scifi" class="genre-input-tag">Science Fiction</label>
 
-            <input type="checkbox" name="genre" value="thriller" id="thriller" hidden>
+            <input type="checkbox" name="genre" value="thriller" id="thriller" {{#isThriller}}checked{{/isThriller}} hidden>
             <label for="thriller" class="genre-input-tag">Thriller</label>
 
-            <input type="checkbox" name="genre" value="tv-movie" id="tv" hidden>
+            <input type="checkbox" name="genre" value="tv-movie" id="tv" {{#isTv-movie}}checked{{/isTv-movie}} hidden>
             <label for="tv" class="genre-input-tag">TV Movie</label>
 
-            <input type="checkbox" name="genre" value="war" id="war" hidden>
+            <input type="checkbox" name="genre" value="war" id="war" {{#isWar}}checked{{/isWar}} hidden>
             <label for="war" class="genre-input-tag">War</label>
 
-            <input type="checkbox" name="genre" value="western" id="western" hidden>
+            <input type="checkbox" name="genre" value="western" id="western" {{#isWestern}}checked{{/isWestern}} hidden>
             <label for="western" class="genre-input-tag">Western</label>
         </div>
     </div>
 
     <div class="filter-group">
         <label for="prodCompany">Production Company</label>
-        <input name="prodCompany" id="prodCompany" class="short-input" type="text" placeholder="e.g. Disney">
+        <input name="prodCompany" id="prodCompany" class="short-input" type="text" placeholder="e.g. Disney" {{#prodCompany}}value="{{prodCompany}}" {{/prodCompany}}>
     </div>
 
     <button type="submit" class="action-button full-width">Apply Filters</button>

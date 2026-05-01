@@ -1,4 +1,3 @@
-
 package movie.review.app.controllers;
 
 import java.util.List;
@@ -13,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 import movie.review.app.models.Movie;
 import movie.review.app.models.Page;
 import movie.review.app.models.RecommendationResponse;
-
 import movie.review.app.services.RecommendationService;
 import movie.review.app.services.UserService;
 import movie.review.app.services.UtilityService;
@@ -74,21 +72,28 @@ public class RecommendationController {
         mv.addObject("isRevenue", "revenue".equals(sortBy));
         mv.addObject("isReleaseDate", "releaseDate".equals(sortBy));
         mv.addObject("isAsc", "asc".equals(sortByOrder));
+        mv.addObject("minRating", minRating);
+        mv.addObject("prodCompany", prodCompany);
 
         StringBuilder baseUrl = new StringBuilder("/recommendations?");
-        if (sortBy != null && !sortBy.isEmpty())
+        if (sortBy != null && !sortBy.isEmpty()) {
             baseUrl.append("sortBy=").append(sortBy).append("&");
-        if (sortByOrder != null && !sortByOrder.isEmpty())
+        }
+        if (sortByOrder != null && !sortByOrder.isEmpty()) {
             baseUrl.append("sortByOrder=").append(sortByOrder).append("&");
-        if (minRating != null && !minRating.isEmpty())
+        }
+        if (minRating != null && !minRating.isEmpty()) {
             baseUrl.append("minRating=").append(minRating).append("&");
+        }
         if (genres != null) {
             for (String genre : genres) {
                 baseUrl.append("genre=").append(genre).append("&");
+                mv.addObject("is" + genre.substring(0, 1).toUpperCase() + genre.substring(1), true);
             }
         }
-        if (prodCompany != null && !prodCompany.isEmpty())
+        if (prodCompany != null && !prodCompany.isEmpty()) {
             baseUrl.append("prodCompany=").append(prodCompany).append("&");
+        }
 
         mv.addObject("baseUrl", baseUrl.toString());
 
