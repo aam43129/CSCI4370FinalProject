@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import movie.review.app.models.Movie;
-
 import movie.review.app.services.HomeService;
 import movie.review.app.services.UserService;
 

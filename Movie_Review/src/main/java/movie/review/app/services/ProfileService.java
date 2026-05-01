@@ -46,8 +46,7 @@ public class ProfileService {
                 + "WHERE uml.user_id = ? "
                 + "AND m.movie_id = uml.movie_id "
                 + "GROUP BY m.movie_id "
-                + "ORDER BY AVG(m.popularity) DESC "
-                + "LIMIT 10;";
+                + "ORDER BY AVG(m.popularity) DESC";
 
         List<Movie> movies = new ArrayList<>();
 
