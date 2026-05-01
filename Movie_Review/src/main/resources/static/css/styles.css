@@ -276,7 +276,7 @@ nav a img {
     width: 100%;
     position: relative;
     margin-bottom: 8pt;
-    overflow: hidden;
+    /* overflow:; */
     transition: transform .5s ease;
     border-radius: 8px;
     aspect-ratio: 2 / 3;
@@ -368,7 +368,6 @@ nav a img {
     opacity: 0;
     transition: opacity .5s ease;
     background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.70), black);
-    overflow: hidden;
     text-decoration: none;
 }
 
@@ -387,11 +386,17 @@ nav a img {
     width: 100%;
     height: auto;
     margin: 0;
+    white-space: normal;
 }
 
 .card-overlay p {
     font-size: 1em;
     width: 100%;
+    margin: 0;
+    white-space: normal;
+    -webkit-line-clamp: 3; /* Show exactly 3 lines of text */
+    -webkit-box-orient: vertical;
+    height: auto;
 }
 
 .results-wrapper {
