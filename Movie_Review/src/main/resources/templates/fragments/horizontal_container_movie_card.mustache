@@ -1,0 +1,20 @@
+<div class="horizontal-movie-card framed">
+    <img src="{{poster}}" alt="{{title}}">
+
+    {{#isListed}}
+        <form class="bookmark-btn selected" method="get" action="/movies/{{movieId}}/list/false">
+            <button class="fa fa-bookmark"></button>
+        </form>
+    {{/isListed}}
+
+    {{^isListed}}
+        <form class="bookmark-btn" method="get" action="/movies/{{movieId}}/list/true">
+            <button class="fa-regular fa-bookmark-o"></button>
+        </form>
+    {{/isListed}}    
+
+    <a href="/movies/{{movieId}}" class="card-overlay">
+        <span class="card-title">{{title}}</span>
+        <p>{{tagline}}</p>
+    </a>
+</div>

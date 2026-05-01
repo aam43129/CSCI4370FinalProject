@@ -12,8 +12,9 @@
 
     <h1 class="list-title">Trending Movies</h1>
     <div class="trending-container">
-        <div class="movies_container"> {{#trendingMovies}}
-                {{> fragments/movie_card}}
+        <div class="horizontal_movies_container"> 
+            {{#trendingMovies}}
+                {{> fragments/horizontal_container_movie_card}}
             {{/trendingMovies}}
         </div>
         {{^trendingMovies}}
@@ -24,9 +25,9 @@
    {{#genreSections}}
        <h1 class="list-title">Top in {{genreName}}</h1>
        <div class="trending-container">
-           <div class="movies_container">
+           <div class="horizontal_movies_container">
                {{#movies}}
-                   {{> fragments/movie_card}}
+                   {{> fragments/horizontal_container_movie_card}}
                {{/movies}}
            </div>
        </div>
