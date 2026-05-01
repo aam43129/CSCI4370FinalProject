@@ -249,8 +249,8 @@ nav a img {
     background: linear-gradient(to top left, black, black, black, black, #009BFF);
     border-radius: 8px;
     box-shadow: 3px 3px 8px #0099ff30;
-    overflow-x: hidden;
-    /*white-space: nowrap;*/
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
 .list-title {
@@ -284,11 +284,11 @@ nav a img {
 
 .horizontal_movies_container {
     display: flex;
-    flex-wrap: wrap;
+    /* Change auto-fill to auto-fit and set a max width */
+    grid-template-columns: repeat(auto-fill, minmax(180px, 220px));
     gap: 25px;
     padding: 20px;
-    justify-content: flex-start;
-    width: 100%;
+    justify-content: start; /* Align to the left instead of stretching */
 }
 
 .horizontal-movie-card {
@@ -301,11 +301,6 @@ nav a img {
     transition: transform .5s ease;
     border-radius: 8px;
     aspect-ratio: 2 / 3;
-}
-
-.horizontal-row {
-    flex-wrap: nowrap !important;
-    overflow-x: auto;
 }
 
 .movie-card:hover, .horizontal-movie-card:hover {
