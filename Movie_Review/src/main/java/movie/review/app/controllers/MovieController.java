@@ -88,7 +88,6 @@ public class MovieController {
                 mv.addObject("review", review);
 
                 double rating = UtilityService.getFormattedRating(review.getRating());
-                System.out.println(rating);
                 mv.addObject("rating" + rating, true);
                 return mv;
             } else {
@@ -163,10 +162,6 @@ public class MovieController {
     public String postReview(@PathVariable("movieId") String movieId,
             @RequestParam(name = "rating") double rating,
             @RequestParam(name = "content") String content) {
-        System.out.println("The user is attempting add a review:");
-        System.out.println("\tmovieId: " + movieId);
-        System.out.println("\trating: " + rating);
-        System.out.println("\tcontent: " + content);
         String userId = userService.getLoggedInUser().getUserId();
 
         boolean isSucessful = movieService.postReview(userId, movieId, rating, content);
